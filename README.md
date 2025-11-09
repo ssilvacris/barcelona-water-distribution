@@ -56,7 +56,7 @@ All datasets used in this project were obtained from the **Open Data Portal of t
 
 - Interactive map created with `folium` and `MarkerCluster`.  
 - Each marker represents a public fountain.  
-- The map can be viewed [here](outputs/barcelona_water_map.html) (via GitHub Pages).
+- The map can be viewed [here](outputs/barcelona_water_map.html) .
 
 ---
 
