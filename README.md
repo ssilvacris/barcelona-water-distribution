@@ -63,7 +63,7 @@ All datasets used in this project were obtained from the **Open Data Portal of t
 ### 5. Machine Learning
 
 - **Linear Regression** to predict number of fountains from population.  
-- **K-Means Clustering** to group districts by access level.  
+- **K-Means Clustering** to group districts by access level.  The map can be viewed [here](outputs/barcelona_water_map_clusters.html)
 - Evaluation using R² and MAE metrics.
 
 ---
