@@ -98,18 +98,6 @@ barcelona-water-distribution/
 
 ---
 
-## 🧰 Installation
-
-Clone the repository and install dependencies:
-
-```bash
-git clone https://github.com/SEU_USUARIO/barcelona-water-distribution.git
-cd barcelona-water-distribution
-pip install -r requirements.txt
-
-jupyter notebook notebooks/FontsBeure_Population.ipynb
-
-open outputs/barcelona_water_map.html
 
 
 
