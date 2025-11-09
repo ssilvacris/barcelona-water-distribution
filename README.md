@@ -5,7 +5,7 @@
 
 ---
 
-##Project Overview
+## Project Overview
 
 This project analyzes the **distribution of public drinking fountains in Barcelona (2019–2024)** and explores how it relates to the **population of each district**.  
 The goal is to understand whether access to water points correlates with demographic factors and if simple machine learning models can capture meaningful spatial patterns.
