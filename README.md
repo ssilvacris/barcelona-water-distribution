@@ -56,7 +56,7 @@ All datasets used in this project were obtained from the **Open Data Portal of t
 
 - Interactive map created with `folium` and `MarkerCluster`.  
 - Each marker represents a public fountain.  
-- The map can be viewed [here](https://ssilvacris.github.io/barcelona-water-distribution/outputs/barcelona_water_map.html) (via GitHub Pages).
+- The map can be viewed [here](outputs/barcelona_water_map.html) (via GitHub Pages).
 
 ---
 
@@ -83,7 +83,18 @@ All datasets used in this project were obtained from the **Open Data Portal of t
 
 
 ---
-
+barcelona-water-distribution/
+├── notebooks/
+│ └── FontsBeure_Population.ipynb
+├── data/
+│ ├── poplacio_2019_2024.csv
+│ ├── fonts_beure_2019_2024.csv
+│ └── BarcelonaCiutat_Districtes.csv
+├── outputs/
+│ ├── barcelona_water_map.html
+│ └── figures/
+├── requirements.txt
+└── README.md
 
 ---
 
