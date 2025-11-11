@@ -7,18 +7,18 @@
 
 ## Project Overview
 
-This project analyzes the **distribution of public drinking fountains in Barcelona (2019–2024)** and explores how it relates to the **population of each district**.  
-The goal is to understand whether access to water points correlates with demographic factors and if simple machine learning models can capture meaningful spatial patterns.
+This project analyzes the **distribution and evolution of public drinking fountains in Barcelona** from 2019 to 2024.  
+The analysis integrates **open urban data** on fountains and population by district to assess whether **access to public water** has improved equitably across the city.
+
 
 ---
 
 ## Objectives
 
-- Clean and integrate population and infrastructure datasets.  
-- Visualize the distribution of fountains across Barcelona districts.  
-- Compare availability of fountains relative to population density.  
-- Apply basic Machine Learning models (Regression and Clustering) to identify patterns.  
-- Create an **interactive map** with Folium to explore the results.  
+- Integrate datasets on fountains, population, and administrative boundaries.  
+- Calculate the ratio of **fountains per 1,000 inhabitants** by district and year.  
+- Examine **spatial and temporal inequalities** in access to public water.  
+- Visualize how these patterns evolve over time.
 
 ---
 
@@ -60,11 +60,6 @@ All datasets used in this project were obtained from the **Open Data Portal of t
 
 ---
 
-### 5. Machine Learning
-
-- **Linear Regression** to predict number of fountains from population.  
-- **K-Means Clustering** to group districts by access level.  The map can be viewed [here](outputs/barcelona_water_map_clusters.html)
-- Evaluation using R² and MAE metrics.
 
 ---
 
