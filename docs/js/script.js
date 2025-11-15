@@ -1,109 +1,59 @@
 const LANG = {
   ca: {
-    // UI geral
     title: "Fonts d'aigua BCN (2025)",
-    subtitle: "Mapa interactiu de fonts d'aigua potable a Barcelona (2019–2024), integrant dades de fonts i de població per districte per analitzar l'accés a l'aigua pública.",
     source: "Dades: Open Data Barcelona.",
     filter: "Filtrar per districte",
     locate: "📍 Mostrar font més propera",
     nearestPrefix: "Font més propera",
-    about: "Sobre aquest projecte i l'anàlisi de dades",
+    about: "Sobre aquest projecte",
     geoNotSupported: "Geolocalització no suportada.",
     allOption: "— Tots —",
     visibleLabel: "Fonts visibles",
-    youAreHere: "Ets aquí",
 
-    // teaser de insights (sidebar)
-    insightsTeaserTitle: "Insights de dades",
-    insightsTeaserText: "Consulta els gràfics de fonts per districte i fonts per 1.000 habitants per entendre millor les possibles desigualtats d'accés a l'aigua pública a Barcelona.",
-    insightsTeaserLink: "Veure els insights",
-
-    // textos da secção de insights (abaixo do mapa)
+    // 🟦 Teaser (CAT)
     insightsTitle: "Insights de dades",
-
-    insights1Title: "Fonts per districte (2024)",
-    insights1Text: "Alguns districtes concentren moltes més fonts que altres en termes absoluts. Quan normalitzem per població, la classificació canvia i revela diferències en l'accés real.",
-
-    insights2Title: "Fonts per 1.000 habitants",
-    insights2Text: "L'indicador de fonts per 1.000 habitants mostra disparitats rellevants entre districtes, especialment quan es comparen zones centrals i perifèriques.",
-
-    insights3Title: "Variabilitat temporal de l’accessibilitat (2019–2024)",
-    insights3Text: "La desviació estàndard del nombre de fonts per 1.000 habitants permet identificar quins districtes presenten majors fluctuacions al llarg del temps.",
-
-    insightsSummaryTitle: "Resum final de l’anàlisi",
-    insightsSummaryText1: "La combinació d’indicadors absoluts, valors per càpita i variabilitat temporal ofereix una visió completa de l’accessibilitat a les fonts públiques.",
-    insightsSummaryText2: "La normalització revela desigualtats territorials que no són visibles quan només es consideren els valors absoluts.",
-    insightsSummaryText3: "L’estudi de la variabilitat temporal permet identificar patrons d’estabilitat i canvi útils per a la planificació urbana i la gestió pública."
+    insightsText:
+      "Consulta els gràfics de fonts per districte i fonts per 1.000 habitants per entendre millor les possibles desigualtats d'accés a l'aigua pública a Barcelona.",
+    insightsLink: "Veure els insights"
   },
 
   en: {
     title: "Barcelona Water Fountains (2025)",
-    subtitle: "Interactive map of public drinking fountains in Barcelona (2019–2024), combining fountain and population data by district to analyse access to public water.",
     source: "Data: Open Data BCN.",
     filter: "Filter by district",
     locate: "📍 Show nearest fountain",
     nearestPrefix: "Nearest fountain",
-    about: "About this project and data analysis",
+    about: "About this project",
     geoNotSupported: "Geolocation not supported.",
     allOption: "— All —",
     visibleLabel: "Visible fountains",
-    youAreHere: "You are here",
 
-    insightsTeaserTitle: "Data insights",
-    insightsTeaserText: "See the charts of fountains per district and fountains per 1,000 inhabitants to better understand possible inequalities in access to public water in Barcelona.",
-    insightsTeaserLink: "View insights",
-
+    // 🟦 Teaser (EN)
     insightsTitle: "Data insights",
-
-    insights1Title: "Fountains per district (2024)",
-    insights1Text: "Some districts contain far more fountains than others in absolute terms. When normalised by population, rankings shift and reveal meaningful differences in real accessibility.",
-
-    insights2Title: "Fountains per 1,000 inhabitants",
-    insights2Text: "The indicator of fountains per 1,000 inhabitants shows relevant disparities across districts, especially when comparing central and peripheral areas.",
-
-    insights3Title: "Temporal variability of accessibility (2019–2024)",
-    insights3Text: "The standard deviation of fountains per 1,000 inhabitants highlights which districts experienced the greatest fluctuations over time.",
-
-    insightsSummaryTitle: "Final analysis summary",
-    insightsSummaryText1: "Combining absolute values, per-capita indicators and temporal variability provides a comprehensive view of public water accessibility.",
-    insightsSummaryText2: "Normalisation reveals territorial inequities that are not visible when only absolute values are considered.",
-    insightsSummaryText3: "Temporal variability highlights stability and change patterns that are useful for urban planning and public resource management."
+    insightsText:
+      "Explore charts showing fountains per district and per 1,000 inhabitants to better understand differences in public water access across Barcelona.",
+    insightsLink: "View insights"
   },
 
   es: {
-    title: "Fuentes de Agua de Barcelona (2025)",
-    subtitle: "Mapa interactivo de fuentes de agua potable en Barcelona (2019–2024), combinando datos de fuentes y población por distrito para analizar el acceso al agua pública.",
-    source: "Datos: Open Data BCN.",
+    title: "Fuentes de agua de Barcelona (2025)",
+    source: "Datos: Open Data Barcelona.",
     filter: "Filtrar por distrito",
     locate: "📍 Mostrar fuente más cercana",
     nearestPrefix: "Fuente más cercana",
-    about: "Sobre este proyecto y el análisis de datos",
+    about: "Sobre este proyecto",
     geoNotSupported: "Geolocalización no soportada.",
     allOption: "— Todos —",
     visibleLabel: "Fuentes visibles",
-    youAreHere: "Estás aquí",
 
-    insightsTeaserTitle: "Insights de datos",
-    insightsTeaserText: "Consulta los gráficos de fuentes por distrito y fuentes por 1.000 habitantes para entender mejor las posibles desigualdades en el acceso al agua pública en Barcelona.",
-    insightsTeaserLink: "Ver insights",
-
+    // 🟦 Teaser (ES)
     insightsTitle: "Insights de datos",
-
-    insights1Title: "Fuentes por distrito (2024)",
-    insights1Text: "Algunos distritos concentran muchas más fuentes que otros en términos absolutos. Al normalizar por población, la clasificación cambia y revela diferencias reales en el acceso.",
-
-    insights2Title: "Fuentes por 1.000 habitantes",
-    insights2Text: "El indicador de fuentes por 1.000 habitantes muestra disparidades relevantes entre distritos, especialmente al comparar zonas centrales y periféricas.",
-
-    insights3Title: "Variabilidad temporal de la accesibilidad (2019–2024)",
-    insights3Text: "La desviación estándar del número de fuentes por 1.000 habitantes permite identificar qué distritos presentan mayores fluctuaciones a lo largo del tiempo.",
-
-    insightsSummaryTitle: "Resumen final del análisis",
-    insightsSummaryText1: "La combinación de valores absolutos, indicadores per cápita y variabilidad temporal ofrece una visión completa de la accesibilidad a las fuentes públicas.",
-    insightsSummaryText2: "La normalización revela desigualdades territoriales que no se observan al analizar solo los valores absolutos.",
-    insightsSummaryText3: "El análisis de la variabilidad temporal permite identificar patrones de estabilidad y cambio útiles para la planificación urbana y la gestión pública."
+    insightsText:
+      "Consulta los gráficos de fuentes por distrito y por 1.000 habitantes para entender mejor las posibles desigualdades de acceso al agua pública en Barcelona.",
+    insightsLink: "Ver insights"
   }
 };
+
 
 
 let currentLang = "ca";
@@ -225,6 +175,34 @@ function populateDistrictFilter() {
     opt.textContent = d;
     districtFilterEl.appendChild(opt);
   });
+}
+// Apply Language
+function applyLanguage(langCode) {
+  currentLang = langCode;
+  const LText = LANG[langCode];
+
+  document.getElementById("appTitle").textContent = LText.title;
+  document.getElementById("dataSourceText").textContent = LText.source;
+  document.getElementById("districtLabel").textContent = LText.filter;
+  document.getElementById("locateBtn").textContent = LText.locate;
+  document.getElementById("aboutLink").textContent = LText.about;
+
+  // 🆕 Teaser
+  document.getElementById("insightsTeaserTitle").textContent = LText.insightsTitle;
+  document.getElementById("insightsTeaserText").textContent = LText.insightsText;
+  document.getElementById("insightsTeaserLink").textContent = LText.insightsLink;
+
+  // atualizar texto "Fonts visibles"
+  updateCountInfo(
+    parseInt((document.getElementById('countInfo').dataset.visible || allFountains.length), 10) || allFountains.length,
+    allFountains.length
+  );
+
+  // atualizar opção “todos”
+  const select = document.getElementById("districtFilter");
+  if (select.options.length > 0) {
+    select.options[0].textContent = LText.allOption;
+  }
 }
 
 if (districtFilterEl) {

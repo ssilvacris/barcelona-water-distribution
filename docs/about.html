@@ -7,10 +7,11 @@
   <link rel="stylesheet" href="css/styles.css" />
 </head>
 <body>
+  <!-- Reutilizo #appLayout e #sidebar, mas forço layout “full width” com inline simples -->
   <div id="appLayout" style="display:block; height:auto;">
     <div id="sidebar" style="width:100%; border-right:none; border-bottom:1px solid #ddd;">
       <div class="top-bar">
-        <a href="index.html" class="small">&larr; Back to map</a>
+        <a href="index.html" id="aboutBackLink" class="small"></a>
 
         <select id="aboutLangSelect" aria-label="Language">
           <option value="ca">Català</option>
@@ -54,6 +55,7 @@
   <script>
     const ABOUT_LANG = {
       ca: {
+        backLink: "← Tornar al mapa",
         title: "Sobre aquest projecte",
         overviewHeading: "Visió general",
         overviewText: "Aquest projecte analitza la distribució i evolució de les fonts d'aigua potable a Barcelona entre 2019 i 2024. Combinant dades de fonts i població per districte, investiga si l'accés a l'aigua pública evoluciona de manera equitativa a la ciutat.",
@@ -78,6 +80,7 @@
       },
 
       en: {
+        backLink: "← Back to map",
         title: "About this project",
         overviewHeading: "Overview",
         overviewText: "This project analyses the distribution and evolution of public drinking fountains in Barcelona between 2019 and 2024. By combining fountain data with population by district, it investigates whether access to public water is evolving equitably across the city.",
@@ -102,6 +105,7 @@
       },
 
       es: {
+        backLink: "← Volver al mapa",
         title: "Sobre este proyecto",
         overviewHeading: "Visión general",
         overviewText: "Este proyecto analiza la distribución y evolución de las fuentes de agua potable en Barcelona entre 2019 y 2024. Combinando datos de fuentes y población por distrito, investiga si el acceso al agua pública está evolucionando de forma equitativa en la ciudad.",
@@ -129,6 +133,10 @@
     function applyAboutLanguage(lang) {
       const t = ABOUT_LANG[lang];
 
+      // atualiza atributo lang do HTML
+      document.documentElement.lang = lang;
+
+      document.getElementById("aboutBackLink").textContent = t.backLink;
       document.getElementById("aboutTitle").textContent = t.title;
       document.getElementById("aboutOverviewHeading").textContent = t.overviewHeading;
       document.getElementById("aboutOverviewText").textContent = t.overviewText;
@@ -161,7 +169,7 @@
       applyAboutLanguage(e.target.value);
     });
 
-    // idioma por defeito
+    // idioma por defecto
     applyAboutLanguage("ca");
   </script>
 </body>
