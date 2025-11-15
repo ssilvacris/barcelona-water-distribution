@@ -54,8 +54,31 @@
     </div>
 
     <h1 id="appTitle">Fonts d'aigua BCN (2025)</h1>
+
+    <!-- Novo subtítulo + stack técnico para reforçar o aspecto de Data Science -->
+    <p id="projectSubtitle" class="small">
+      Mapa interactiu de fonts d'aigua potable a Barcelona (2019–2024), integrant dades de fonts i de població per districte per analitzar l'accés a l'aigua pública.
+    </p>
+
+    <div class="stack-tags">
+      <span>Python</span>
+      <span>Pandas</span>
+      <span>GeoPandas</span>
+      <span>Leaflet.js</span>
+      <span>Data Visualization</span>
+    </div>
+
     <p class="small" id="dataSourceText">Dades: Open Data Barcelona.</p>
+
+    <!-- KPIs simples para parecer mais “projecto de análise de dados” -->
     <p id="countInfo" class="small"></p>
+    <ul class="kpi-list small">
+      <li><strong>1.736</strong> fonts d'aigua mapejades</li>
+      <li><strong>10</strong> districtes</li>
+      <li><strong>Indicador clau:</strong> fonts per 1.000 habitants</li>
+    </ul>
+
+    <hr />
 
     <label for="districtFilter" id="districtLabel">Filtrar per districte</label>
     <select id="districtFilter">
@@ -65,14 +88,58 @@
     <button id="locateBtn">📍 Mostrar font més propera</button>
     <p id="nearestInfo" class="small"></p>
 
+    <!-- Lista de fontes (já existente) -->
     <div class="fountain-list" id="fountainList"></div>
 
+    <hr />
+
+    <!-- Chamada para insights / gráficos (pode linkar para secção em outra página ou futura secção) -->
+    <div class="insights-teaser small">
+      <h2 class="small">Insights de dades</h2>
+      <p>
+        Consulta els gràfics de fonts per districte i fonts per 1.000 habitants per entendre millor
+        les possibles desigualtats d'accés a l'aigua pública a Barcelona.
+      </p>
+      <a href="#insights" class="small">Veure els insights (beta)</a>
+    </div>
+
+    <hr />
+
+    <!-- Link para About com foco em projeto de Data Science / portfólio -->
     <p class="small about-link">
-      <a href="about.html" id="aboutLink" target="_blank">Sobre aquest projecte</a>
+      <a href="about.html" id="aboutLink" target="_blank">
+        Sobre aquest projecte i l'anàlisi de dades
+      </a>
     </p>
   </div>
 
   <div id="map"></div>
+
+  <!-- Secção opcional para gráficos/insights (podes gerar as imagens via notebooks) -->
+  <section id="insights" class="insights-section">
+    <h2>Insights de dades (prototip)</h2>
+
+    <article class="insight">
+      <h3>Fonts per districte (2024)</h3>
+      <p class="small">
+        Alguns districtes concentren moltes més fonts que altres en termes absoluts.
+        Quan normalitzem per població, la classificació canvia i revela diferències en l'accés real.
+      </p>
+      <!-- Ajusta o caminho da imagem conforme a estrutura do teu projeto -->
+      <img src="outputs/fountains_per_district_2024.png"
+           alt="Gràfic de barres: fonts per districte a Barcelona, any 2024" />
+    </article>
+
+    <article class="insight">
+      <h3>Fonts per 1.000 habitants</h3>
+      <p class="small">
+        L'indicador de fonts per 1.000 habitants mostra disparitats rellevants entre districtes,
+        especialment quan es comparen zones centrals i perifèriques.
+      </p>
+      <img src="outputs/fountains_per_1000_2024.png"
+           alt="Gràfic: fonts per mil habitants per districte" />
+    </article>
+  </section>
 
   <!-- Leaflet JS -->
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" crossorigin=""></script>
@@ -81,3 +148,9 @@
   <script src="js/script.js"></script>
 </body>
 </html>
+<section id="insights" class="insights-section">
+  ...
+  <img src="outputs/fountains_per_district_2024.png" ... />
+  ...
+  <img src="outputs/fountains_per_1000_2024.png" ... />
+</section>

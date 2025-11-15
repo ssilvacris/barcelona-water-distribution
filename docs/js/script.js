@@ -25,7 +25,8 @@ const LANG = {
     about: "Sobre aquest projecte",
     geoNotSupported: "Geolocalització no suportada.",
     allOption: "— Tots —",
-    visibleLabel: "Fonts visibles"
+    visibleLabel: "Fonts visibles",
+    youAreHere: "Ets aquí"
   },
   en: {
     title: "Barcelona Water Fountains (2025)",
@@ -36,7 +37,8 @@ const LANG = {
     about: "About this project",
     geoNotSupported: "Geolocation not supported.",
     allOption: "— All —",
-    visibleLabel: "Visible fountains"
+    visibleLabel: "Visible fountains",
+    youAreHere: "You are here"
   },
   pt: {
     title: "Fontes de Água de Barcelona (2025)",
@@ -47,7 +49,8 @@ const LANG = {
     about: "Sobre este projeto",
     geoNotSupported: "Geolocalização não suportada.",
     allOption: "— Todos —",
-    visibleLabel: "Fontes visíveis"
+    visibleLabel: "Fontes visíveis",
+    youAreHere: "Você está aqui"
   }
 };
 
@@ -62,6 +65,12 @@ L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
 
 let allFountains = [];
 let markersLayer = L.layerGroup().addTo(map);
+
+// helpers de DOM
+const countInfoEl = document.getElementById('countInfo');
+const nearestInfoEl = document.getElementById('nearestInfo');
+const districtFilterEl = document.getElementById('districtFilter');
+const locateBtnEl = document.getElementById('locateBtn');
 
 // carrega CSV
 fetch(CSV_FILE)
@@ -133,65 +142,109 @@ function renderFountains(selectedDistrict = "") {
 }
 
 function updateCountInfo(visible, total) {
-  const el = document.getElementById('countInfo');
+  if (!countInfoEl) return;
   const LText = LANG[currentLang];
-  el.textContent = `${LText.visibleLabel}: ${visible} | Total: ${total}`;
+
+  // guarda os valores atuais para poder reaproveitar na troca de idioma
+  countInfoEl.dataset.visible = String(visible);
+  countInfoEl.dataset.total = String(total);
+
+  countInfoEl.textContent = `${LText.visibleLabel}: ${visible} | Total: ${total}`;
 }
 
 // filtro distrital
 function populateDistrictFilter() {
-  const select = document.getElementById('districtFilter');
+  if (!districtFilterEl) return;
+
   const districts = Array.from(new Set(
     allFountains.map(f => f.district).filter(Boolean)
   )).sort();
   
   // mantém a primeira opção para "todos"
-  select.innerHTML = "";
+  districtFilterEl.innerHTML = "";
   const firstOpt = document.createElement("option");
   firstOpt.value = "";
   firstOpt.textContent = LANG[currentLang].allOption;
-  select.appendChild(firstOpt);
+  districtFilterEl.appendChild(firstOpt);
 
   districts.forEach(d => {
     const opt = document.createElement('option');
     opt.value = d;
     opt.textContent = d;
-    select.appendChild(opt);
+    districtFilterEl.appendChild(opt);
   });
 }
 
-document.getElementById('districtFilter').addEventListener('change', (e) => {
-  renderFountains(e.target.value);
-});
-
-// geolocalização
-document.getElementById('locateBtn').addEventListener('click', () => {
-  const LText = LANG[currentLang];
-  if (!navigator.geolocation) {
-    alert(LText.geoNotSupported);
-    return;
-  }
-  navigator.geolocation.getCurrentPosition(pos => {
-    const userLat = pos.coords.latitude;
-    const userLon = pos.coords.longitude;
-    L.circleMarker([userLat, userLon], { radius: 6, color: 'blue' })
-      .addTo(map).bindPopup("You are here").openPopup();
-    map.setView([userLat, userLon], 14);
-
-    const nearest = findNearestFountain(userLat, userLon, allFountains);
-    if (nearest) {
-      L.polyline([[userLat, userLon], [nearest.lat, nearest.lon]], {color: 'blue', dashArray: '4'}).addTo(map);
-      document.getElementById('nearestInfo').textContent =
-        `${LText.nearestPrefix}: ${nearest.name || nearest.code} – ${nearest.distance.toFixed(0)} m (${nearest.district || "—"})`;
-      L.marker([nearest.lat, nearest.lon])
-        .addTo(map)
-        .bindPopup(
-          `<b>${nearest.name || "Font"}</b><br>${nearest.street || ""} ${nearest.num || ""}<br><i>${nearest.district || ""}</i>`
-        )
-        .openPopup();
-    }
+if (districtFilterEl) {
+  districtFilterEl.addEventListener('change', (e) => {
+    renderFountains(e.target.value);
   });
-});
+}
+
+// helper para mensagens da geolocalização
+function setNearestMessage(msg) {
+  if (nearestInfoEl) {
+    nearestInfoEl.textContent = msg;
+  }
+}
+
+// geolocalização (melhor UX)
+if (locateBtnEl) {
+  locateBtnEl.addEventListener('click', () => {
+    const LText = LANG[currentLang];
+
+    if (!navigator.geolocation) {
+      // em vez de só alert, também mostra no painel
+      setNearestMessage(LText.geoNotSupported);
+      alert(LText.geoNotSupported);
+      return;
+    }
+
+    setNearestMessage("Obtenint la teva ubicació...");
+
+    navigator.geolocation.getCurrentPosition(
+      pos => {
+        const userLat = pos.coords.latitude;
+        const userLon = pos.coords.longitude;
+
+        setNearestMessage("Ubicació trobada. Calculant la font més propera...");
+
+        // marcador do utilizador
+        L.circleMarker([userLat, userLon], { radius: 6, color: 'blue' })
+          .addTo(map)
+          .bindPopup(LText.youAreHere)
+          .openPopup();
+        map.setView([userLat, userLon], 14);
+
+        const nearest = findNearestFountain(userLat, userLon, allFountains);
+        if (nearest) {
+          L.polyline([[userLat, userLon], [nearest.lat, nearest.lon]], {
+            color: 'blue',
+            dashArray: '4'
+          }).addTo(map);
+
+          setNearestMessage(
+            `${LText.nearestPrefix}: ${nearest.name || nearest.code} – ${nearest.distance.toFixed(0)} m (${nearest.district || "—"})`
+          );
+
+          L.marker([nearest.lat, nearest.lon])
+            .addTo(map)
+            .bindPopup(
+              `<b>${nearest.name || "Font"}</b><br>${nearest.street || ""} ${nearest.num || ""}<br><i>${nearest.district || ""}</i>`
+            )
+            .openPopup();
+        } else {
+          setNearestMessage("No s'ha trobat cap font propera.");
+        }
+      },
+      error => {
+        setNearestMessage(
+          "No s'ha pogut obtenir la ubicació (" + error.message + ")."
+        );
+      }
+    );
+  });
+}
 
 // distância
 function findNearestFountain(lat, lon, fountains) {
@@ -201,7 +254,7 @@ function findNearestFountain(lat, lon, fountains) {
     const d = haversine(lat, lon, f.lat, f.lon);
     if (d < minDist) {
       minDist = d;
-      nearest = {...f, distance: d};
+      nearest = { ...f, distance: d };
     }
   });
   return nearest;
@@ -214,11 +267,11 @@ function haversine(lat1, lon1, lat2, lon2) {
   const dLat = toRad(lat2 - lat1);
   const dLon = toRad(lon2 - lon1);
   const a =
-    Math.sin(dLat/2)**2 +
+    Math.sin(dLat / 2) ** 2 +
     Math.cos(toRad(lat1)) * Math.cos(toRad(lat2)) *
-    Math.sin(dLon/2)**2;
+    Math.sin(dLon / 2) ** 2;
 
-  const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+  const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
   return R * c;
 }
 
@@ -238,16 +291,16 @@ function applyLanguage(langCode) {
   document.getElementById("locateBtn").textContent = LText.locate;
   document.getElementById("aboutLink").textContent = LText.about;
 
-  // atualizar texto "Fonts visibles"
-  updateCountInfo(
-    parseInt((document.getElementById('countInfo').dataset.visible || allFountains.length), 10) || allFountains.length,
-    allFountains.length
-  );
+  // atualizar texto "Fonts visibles" reaproveitando os dados atuais
+  if (countInfoEl) {
+    const visible = parseInt(countInfoEl.dataset.visible || allFountains.length, 10) || allFountains.length;
+    const total = parseInt(countInfoEl.dataset.total || allFountains.length, 10) || allFountains.length;
+    updateCountInfo(visible, total);
+  }
 
   // atualizar opção "todos" no filtro
-  const select = document.getElementById("districtFilter");
-  if (select.options.length > 0) {
-    select.options[0].textContent = LText.allOption;
+  if (districtFilterEl && districtFilterEl.options.length > 0) {
+    districtFilterEl.options[0].textContent = LText.allOption;
   }
 }
 
