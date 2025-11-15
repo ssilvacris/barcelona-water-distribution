@@ -74,24 +74,28 @@ All datasets used in this project were obtained from the **Open Data Portal of t
 
 ---
 
-## Project Structure
+## Live Demo: Interactive Fountain Explorer
 
+Explore Barcelona’s public drinking fountains through an interactive map built using **Leaflet.js**, **Open Data BCN**, and lightweight frontend technologies.
 
----
-barcelona-water-distribution/
-├── notebooks/
-│ └── FontsBeure_Population.ipynb
-├── data/
-│ ├── poplacio_2019_2024.csv
-│ ├── fonts_beure_2019_2024.csv
-│ └── BarcelonaCiutat_Districtes.csv
-├── outputs/
-│ ├── barcelona_water_map.html
-│ └── figures/
-├── requirements.txt
-└── README.md
+👉 **Live site:**  
+https://ssilvacris.github.io/barcelona-water-distribution/
 
----
+This web application allows users to:
+
+- Browse all public fountains in Barcelona (2025)
+- Filter by administrative district
+- Locate the nearest fountain using device geolocation
+- Visualize the spatial distribution across the city
+- Interact with clean and responsive UI designed for usability
+
+The dataset used is sourced from **Open Data BCN** and includes 1,736 fountains in 2024/2025.
+
+### 📸 Preview
+![Fountains Map](docs/assets/preview-map.png)
+
+### 📁 Source Code
+All frontend code is available inside the `/docs` folder of this repository.
 
 
 
