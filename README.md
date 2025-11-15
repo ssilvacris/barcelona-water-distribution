@@ -91,8 +91,6 @@ This web application allows users to:
 
 The dataset used is sourced from **Open Data BCN** and includes 1,736 fountains in 2024/2025.
 
-### 📸 Preview
-![Fountains Map](docs/assets/preview-map.png)
 
 ### 📁 Source Code
 All frontend code is available inside the `/docs` folder of this repository.
