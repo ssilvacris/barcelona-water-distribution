@@ -42,6 +42,7 @@
 </head>
 
 <body>
+  <!-- LAYOUT PRINCIPAL: sidebar + mapa -->
   <div id="appLayout">
     <div id="sidebar">
       <div class="top-bar">
@@ -57,7 +58,8 @@
       <h1 id="appTitle">Fonts d'aigua BCN (2025)</h1>
 
       <p id="projectSubtitle" class="small">
-        Mapa interactiu de fonts d'aigua potable a Barcelona (2019–2024), integrant dades de fonts i de població per districte per analitzar l'accés a l'aigua pública.
+        Mapa interactiu de fonts d'aigua potable a Barcelona (2019–2024), integrant dades de fonts
+        i de població per districte per analitzar l'accés a l'aigua pública.
       </p>
 
       <div class="stack-tags">
@@ -68,7 +70,7 @@
         <span>Data Visualization</span>
       </div>
 
-      <p class="small" id="dataSourceText">Dades: Open Data BCN.</p>
+      <p class="small" id="dataSourceText">Dades: Open Data Barcelona.</p>
 
       <p id="countInfo" class="small"></p>
       <ul class="kpi-list small">
@@ -97,7 +99,7 @@
           Consulta els gràfics de fonts per districte i fonts per 1.000 habitants per entendre millor
           les possibles desigualtats d'accés a l'aigua pública a Barcelona.
         </p>
-        <a href="#insights" class="small">Veure els insights (beta)</a>
+        <a href="#insights" class="small">Veure els insights</a>
       </div>
 
       <hr />
@@ -109,13 +111,13 @@
       </p>
     </div>
 
-    <!-- MAPA fica como segundo filho do layout -->
+    <!-- MAPA: AGORA É A COLUNA PRINCIPAL LARGA -->
     <div id="map"></div>
   </div>
 
-  <!-- SEÇÃO DE INSIGHTS AGORA SEM SER “COLUNA” DO FLEX -->
+  <!-- INSIGHTS EMBAIXO, FULL WIDTH (sem "prototip") -->
   <section id="insights" class="insights-section">
-    <h2>Insights de dades (prototip)</h2>
+    <h2>Insights de dades</h2>
 
     <article class="insight">
       <h3>Fonts per districte (2024)</h3>
@@ -123,6 +125,7 @@
         Alguns districtes concentren moltes més fonts que altres en termes absoluts.
         Quan normalitzem per població, la classificació canvia i revela diferències en l'accés real.
       </p>
+      <!-- Ajusta o caminho se necessário: outputs/... ou ../outputs/... -->
       <img src="outputs/fountains_per_district_2024.png"
            alt="Gràfic de barres: fonts per districte a Barcelona, any 2024" />
     </article>
@@ -140,9 +143,11 @@
 
   <!-- Leaflet JS -->
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" crossorigin=""></script>
+
   <!-- Custom JS -->
   <script src="js/script.js"></script>
 </body>
+
 </html>
 <section id="insights" class="insights-section">
   ...
