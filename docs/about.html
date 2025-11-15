@@ -2,31 +2,98 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>About This Project</title>
+  <title>About – Fonts d'Aigua Barcelona</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <!-- Importa seu CSS principal -->
   <link rel="stylesheet" href="css/styles.css">
+
+  <!-- Estilo específico da página About (corrige o layout horizontal) -->
+  <style>
+    body {
+      display: block !important;       /* remove o display:flex usado no site principal */
+      padding: 2rem;
+      max-width: 900px;
+      margin: auto;
+      background: #fafafa;
+    }
+
+    .about-container {
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+      line-height: 1.6;
+    }
+
+    h1 {
+      font-size: 2rem;
+      margin-bottom: .5rem;
+    }
+
+    h2 {
+      margin-top: 1.5rem;
+      margin-bottom: 0.5rem;
+    }
+
+    ul {
+      padding-left: 1.2rem;
+    }
+
+    .back-link {
+      margin-top: 2rem;
+      font-weight: bold;
+    }
+
+    .author {
+      display: flex;
+      align-items: center;
+      gap: .5rem;
+      font-size: 1rem;
+    }
+  </style>
+
 </head>
-<body style="padding:2rem; max-width:800px; margin:auto;">
-  <h1>About This Project</h1>
-  <p>
-    This project explores the distribution of public drinking fountains in Barcelona using open data 
-    from Open Data BCN (2019–2025). The analysis was performed using Python and published through 
-    an interactive map built with Leaflet.js and simple frontend technologies.
-  </p>
 
-  <p>
-    The dataset contains <strong>1,736 fountains</strong> across the city's 10 districts. 
-    The web application allows users to explore this information dynamically, filter by district, 
-    locate the nearest fountain and understand spatial patterns of accessibility.
-  </p>
+<body>
+  <div class="about-container">
 
-  <p>
-    Full analysis, code and documentation are available in the GitHub repository and on Medium.
-  </p>
+    <h1>About This Project</h1>
 
-  <p>
-    Author: <strong>Cristiane Silva 👩🏾‍💻</strong>
-  </p>
+    <p>
+      This project explores the distribution of public drinking fountains in Barcelona using open data 
+      from Open Data BCN (2019–2025). The analysis was performed using Python and published through 
+      an interactive map built with Leaflet.js and simple frontend technologies.
+    </p>
 
-  <a href="index.html">⬅ Back to the Map</a>
+    <h2>Dataset</h2>
+    <p>
+      The dataset contains <strong>1,736 fountains</strong> across Barcelona’s 10 districts.  
+      The web application allows users to explore this information dynamically, filter by district, 
+      locate the nearest fountain and understand spatial patterns of accessibility.
+    </p>
+
+    <h2>Full Project</h2>
+    <p>
+      Full analysis, source code and documentation are available on GitHub and Medium:
+    </p>
+    <ul>
+      <li><a href="https://github.com/ssilvacris/barcelona-water-distribution" target="_blank">
+        GitHub Repository
+      </a></li>
+      <li><a href="https://medium.com/@cristianesilva_10348" target="_blank">
+        Medium Articles
+      </a></li>
+    </ul>
+
+    <h2>Author</h2>
+    <p class="author">
+      <strong>Cristiane Silva 👩🏾‍💻</strong>
+    </p>
+
+    <p class="back-link">
+      <a href="index.html">⬅ Back to the Map</a>
+    </p>
+
+  </div>
 </body>
 </html>
