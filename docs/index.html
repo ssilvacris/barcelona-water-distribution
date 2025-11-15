@@ -22,16 +22,16 @@
     crossorigin=""
   />
 
-  <!-- PWA manifest -->
-  <link rel="manifest" href="manifest.json">
-
   <!-- Custom CSS -->
   <link rel="stylesheet" href="css/styles.css" />
 
   <!-- PapaParse -->
   <script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
 
-  <!-- Register Service Worker -->
+  <!-- PWA manifest  -->
+  <link rel="manifest" href="manifest.json">
+
+  <!-- Service Worker  -->
   <script>
     if ("serviceWorker" in navigator) {
       window.addEventListener("load", function () {
@@ -93,23 +93,18 @@
 
       <hr />
 
+      <!-- TEASER DE INSIGHTS NA SIDEBAR -->
       <div class="insights-teaser small">
-        <h2 class="small">Insights de dades</h2>
-        <p>
+        <h2 id="insightsTeaserTitle" class="small">Insights de dades</h2>
+        <p id="insightsTeaserText">
           Consulta els gràfics de fonts per districte i fonts per 1.000 habitants per entendre millor
           les possibles desigualtats d'accés a l'aigua pública a Barcelona.
         </p>
-        <a href="#insights" class="small">Veure els insights</a>
+        <a href="#insights" class="small" id="insightsTeaserLink">Veure els insights</a>
       </div>
 
       <hr />
 
-      <div class="insights-teaser small">
-        <h2 id="insightsTeaserTitle"></h2>
-        <p id="insightsTeaserText"></p>
-        <a href="#insights" id="insightsTeaserLink"></a>
-      </div>
-      
       <p class="small about-link">
         <a href="about.html" id="aboutLink" target="_blank">
           Sobre aquest projecte i l'anàlisi de dades
@@ -117,50 +112,65 @@
       </p>
     </div>
 
-    <!-- MAPA-->
+    <!-- MAPA PRINCIPAL -->
     <div id="map"></div>
   </div>
 
-  <!-- INSIGHTS -->
+  <!-- SEÇÃO DE INSIGHTS  -->
   <section id="insights" class="insights-section">
-    <h2 id="insightsTitle"></h2>
-  
+    <h2 id="insightsTitle">Insights de dades</h2>
+
     <article class="insight">
-      <h3 id="insights1Title"></h3>
-      <p class="small" id="insights1Text"></p>
+      <h3 id="insights1Title">Fonts per districte (2024)</h3>
+      <p class="small" id="insights1Text">
+        Alguns districtes concentren moltes més fonts que altres en termes absoluts.
+        Quan normalitzem per població, la classificació canvia i revela diferències en l'accés real.
+      </p>
       <img src="outputs/fountains_per_district_2024.png"
-           alt="Chart: fountains per district 2019–2024" />
+           alt="Gràfic de barres: fonts per districte a Barcelona, any 2024" />
     </article>
-  
+
     <article class="insight">
-      <h3 id="insights2Title"></h3>
-      <p class="small" id="insights2Text"></p>
+      <h3 id="insights2Title">Fonts per 1.000 habitants</h3>
+      <p class="small" id="insights2Text">
+        L'indicador de fonts per 1.000 habitants mostra disparitats rellevants entre districtes,
+        especialment quan es comparen zones centrals i perifèriques.
+      </p>
       <img src="outputs/fountains_per_1000_2024.png"
-           alt="Chart: fountains per 1,000 inhabitants 2019–2024" />
+           alt="Gràfic: fonts per mil habitants per districte" />
     </article>
-  
+
     <article class="insight">
-      <h3 id="insights3Title"></h3>
-      <p class="small" id="insights3Text"></p>
+      <h3 id="insights3Title">Variabilitat temporal de l’accessibilitat (2019–2024)</h3>
+      <p class="small" id="insights3Text">
+        La desviació estàndard del nombre de fonts per 1.000 habitants permet identificar quins
+        districtes presenten majors fluctuacions al llarg del temps.
+      </p>
       <img src="outputs/fountain_variability_2019_2024.png"
-           alt="Chart: temporal variability of fountains per 1,000 inhabitants 2019–2024" />
+           alt="Gràfic: variabilitat temporal de fonts per 1.000 habitants per districte" />
     </article>
-  
+
     <article class="insight">
-      <h3 id="insightsSummaryTitle"></h3>
-      <p class="small" id="insightsSummaryText1"></p>
-      <p class="small" id="insightsSummaryText2"></p>
-      <p class="small" id="insightsSummaryText3"></p>
+      <h3 id="insightsSummaryTitle">Resum final de l’anàlisi</h3>
+      <p class="small" id="insightsSummaryText1">
+        La combinació d’indicadors absoluts, valors per càpita i variabilitat temporal ofereix una
+        visió completa de l’accessibilitat a les fonts públiques.
+      </p>
+      <p class="small" id="insightsSummaryText2">
+        La normalització revela desigualtats territorials que no són visibles quan només es
+        consideren els valors absoluts.
+      </p>
+      <p class="small" id="insightsSummaryText3">
+        L’estudi de la variabilitat temporal permet identificar patrons d’estabilitat i canvi útils
+        per a la planificació urbana i la gestió pública.
+      </p>
     </article>
   </section>
-  
 
   <!-- Leaflet JS -->
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" crossorigin=""></script>
 
-  <!-- Custom JS -->
+  <!-- script principal  -->
   <script src="js/script.js"></script>
- 
-  
 </body>
 </html>
