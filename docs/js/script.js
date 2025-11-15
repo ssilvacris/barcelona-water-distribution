@@ -23,7 +23,9 @@ const LANG = {
     locate: "📍 Mostrar font més propera",
     nearestPrefix: "Font més propera",
     about: "Sobre aquest projecte",
-    geoNotSupported: "Geolocalització no suportada."
+    geoNotSupported: "Geolocalització no suportada.",
+    allOption: "— Tots —",
+    visibleLabel: "Fonts visibles"
   },
   en: {
     title: "Barcelona Water Fountains (2025)",
@@ -32,7 +34,9 @@ const LANG = {
     locate: "📍 Show nearest fountain",
     nearestPrefix: "Nearest fountain",
     about: "About this project",
-    geoNotSupported: "Geolocation not supported."
+    geoNotSupported: "Geolocation not supported.",
+    allOption: "— All —",
+    visibleLabel: "Visible fountains"
   },
   pt: {
     title: "Fontes de Água de Barcelona (2025)",
@@ -41,7 +45,9 @@ const LANG = {
     locate: "📍 Mostrar fonte mais próxima",
     nearestPrefix: "Fonte mais próxima",
     about: "Sobre este projeto",
-    geoNotSupported: "Geolocalização não suportada."
+    geoNotSupported: "Geolocalização não suportada.",
+    allOption: "— Todos —",
+    visibleLabel: "Fontes visíveis"
   }
 };
 
@@ -128,7 +134,8 @@ function renderFountains(selectedDistrict = "") {
 
 function updateCountInfo(visible, total) {
   const el = document.getElementById('countInfo');
-  el.textContent = `Fonts visibles: ${visible} | Total: ${total}`;
+  const LText = LANG[currentLang];
+  el.textContent = `${LText.visibleLabel}: ${visible} | Total: ${total}`;
 }
 
 // filtro distrital
@@ -138,6 +145,13 @@ function populateDistrictFilter() {
     allFountains.map(f => f.district).filter(Boolean)
   )).sort();
   
+  // mantém a primeira opção para "todos"
+  select.innerHTML = "";
+  const firstOpt = document.createElement("option");
+  firstOpt.value = "";
+  firstOpt.textContent = LANG[currentLang].allOption;
+  select.appendChild(firstOpt);
+
   districts.forEach(d => {
     const opt = document.createElement('option');
     opt.value = d;
@@ -223,6 +237,18 @@ function applyLanguage(langCode) {
   document.getElementById("districtLabel").textContent = LText.filter;
   document.getElementById("locateBtn").textContent = LText.locate;
   document.getElementById("aboutLink").textContent = LText.about;
+
+  // atualizar texto "Fonts visibles"
+  updateCountInfo(
+    parseInt((document.getElementById('countInfo').dataset.visible || allFountains.length), 10) || allFountains.length,
+    allFountains.length
+  );
+
+  // atualizar opção "todos" no filtro
+  const select = document.getElementById("districtFilter");
+  if (select.options.length > 0) {
+    select.options[0].textContent = LText.allOption;
+  }
 }
 
 document.getElementById("langSelect").addEventListener("change", (e) => {
