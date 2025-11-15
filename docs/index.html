@@ -5,6 +5,16 @@
   <title>Fonts d'aigua Barcelona 2025</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
 
+  <!-- SEO / Open Graph -->
+  <meta name="title" content="Fonts d'Aigua Barcelona | Interactive Map 2025">
+  <meta name="description" content="Explore all public drinking fountains in Barcelona through an interactive map using open data from Open Data BCN. Filter by district, find the nearest fountain, and learn more about urban water accessibility.">
+  <meta name="keywords" content="Barcelona, water fountains, open data, Leaflet, geolocation, urban planning, data visualization, GIS">
+  <meta name="author" content="Cristiane Silva">
+  <meta property="og:title" content="Interactive Map — Public Fountains in Barcelona">
+  <meta property="og:description" content="Explore Barcelona’s 1,736 public drinking fountains with filters, geolocation and a clean UI.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://ssilvacris.github.io/barcelona-water-distribution/">
+
   <!-- Leaflet CSS -->
   <link
     rel="stylesheet"
@@ -12,19 +22,42 @@
     crossorigin=""
   />
 
+  <!-- PWA manifest -->
+  <link rel="manifest" href="manifest.json">
+
   <!-- Custom CSS -->
   <link rel="stylesheet" href="css/styles.css" />
 
   <!-- PapaParse -->
   <script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
+
+  <!-- Register Service Worker -->
+  <script>
+    if ("serviceWorker" in navigator) {
+      window.addEventListener("load", function () {
+        navigator.serviceWorker.register("service-worker.js");
+      });
+    }
+  </script>
 </head>
 
 <body>
   <div id="sidebar">
-    <h1>Fonts d'aigua BCN (2025)</h1>
-    <p class="small">Dades: Open Data Barcelona</p>
+    <div class="top-bar">
+      <button id="darkModeBtn" title="Toggle theme">🌓</button>
 
-    <label for="districtFilter">Filtrar per districte</label>
+      <select id="langSelect" aria-label="Language">
+        <option value="ca">Català</option>
+        <option value="en">English</option>
+        <option value="pt">Português</option>
+      </select>
+    </div>
+
+    <h1 id="appTitle">Fonts d'aigua BCN (2025)</h1>
+    <p class="small" id="dataSourceText">Dades: Open Data Barcelona.</p>
+    <p id="countInfo" class="small"></p>
+
+    <label for="districtFilter" id="districtLabel">Filtrar per districte</label>
     <select id="districtFilter">
       <option value="">— Tots —</option>
     </select>
@@ -33,6 +66,10 @@
     <p id="nearestInfo" class="small"></p>
 
     <div class="fountain-list" id="fountainList"></div>
+
+    <p class="small about-link">
+      <a href="about.html" id="aboutLink" target="_blank">Sobre aquest projecte</a>
+    </p>
   </div>
 
   <div id="map"></div>

@@ -14,6 +14,39 @@ const codeToDistrict = {
   "10": "Sant Martí",
 };
 
+// Textos em 3 idiomas
+const LANG = {
+  ca: {
+    title: "Fonts d'aigua BCN (2025)",
+    source: "Dades: Open Data Barcelona.",
+    filter: "Filtrar per districte",
+    locate: "📍 Mostrar font més propera",
+    nearestPrefix: "Font més propera",
+    about: "Sobre aquest projecte",
+    geoNotSupported: "Geolocalització no suportada."
+  },
+  en: {
+    title: "Barcelona Water Fountains (2025)",
+    source: "Data: Open Data BCN.",
+    filter: "Filter by district",
+    locate: "📍 Show nearest fountain",
+    nearestPrefix: "Nearest fountain",
+    about: "About this project",
+    geoNotSupported: "Geolocation not supported."
+  },
+  pt: {
+    title: "Fontes de Água de Barcelona (2025)",
+    source: "Dados: Open Data Barcelona.",
+    filter: "Filtrar por distrito",
+    locate: "📍 Mostrar fonte mais próxima",
+    nearestPrefix: "Fonte mais próxima",
+    about: "Sobre este projeto",
+    geoNotSupported: "Geolocalização não suportada."
+  }
+};
+
+let currentLang = "ca";
+
 // inicializa mapa
 const map = L.map('map').setView([41.387, 2.17], 12);
 L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
@@ -53,6 +86,7 @@ fetch(CSV_FILE)
 
         renderFountains();
         populateDistrictFilter();
+        updateCountInfo(allFountains.length, allFountains.length);
       }
     });
   })
@@ -88,6 +122,13 @@ function renderFountains(selectedDistrict = "") {
     const bounds = L.latLngBounds(filtered.map(f => [f.lat, f.lon]));
     map.fitBounds(bounds, { padding: [20, 20] });
   }
+
+  updateCountInfo(filtered.length, allFountains.length);
+}
+
+function updateCountInfo(visible, total) {
+  const el = document.getElementById('countInfo');
+  el.textContent = `Fonts visibles: ${visible} | Total: ${total}`;
 }
 
 // filtro distrital
@@ -111,22 +152,23 @@ document.getElementById('districtFilter').addEventListener('change', (e) => {
 
 // geolocalização
 document.getElementById('locateBtn').addEventListener('click', () => {
+  const LText = LANG[currentLang];
   if (!navigator.geolocation) {
-    alert("Geolocalització no suportada.");
+    alert(LText.geoNotSupported);
     return;
   }
   navigator.geolocation.getCurrentPosition(pos => {
     const userLat = pos.coords.latitude;
     const userLon = pos.coords.longitude;
     L.circleMarker([userLat, userLon], { radius: 6, color: 'blue' })
-      .addTo(map).bindPopup("Ets aquí").openPopup();
+      .addTo(map).bindPopup("You are here").openPopup();
     map.setView([userLat, userLon], 14);
 
     const nearest = findNearestFountain(userLat, userLon, allFountains);
     if (nearest) {
       L.polyline([[userLat, userLon], [nearest.lat, nearest.lon]], {color: 'blue', dashArray: '4'}).addTo(map);
       document.getElementById('nearestInfo').textContent =
-        `Font més propera: ${nearest.name || nearest.code} – ${nearest.distance.toFixed(0)} m (${nearest.district || "—"})`;
+        `${LText.nearestPrefix}: ${nearest.name || nearest.code} – ${nearest.distance.toFixed(0)} m (${nearest.district || "—"})`;
       L.marker([nearest.lat, nearest.lon])
         .addTo(map)
         .bindPopup(
@@ -165,3 +207,27 @@ function haversine(lat1, lon1, lat2, lon2) {
   const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
   return R * c;
 }
+
+// Dark mode
+document.getElementById('darkModeBtn').onclick = () => {
+  document.body.classList.toggle('dark');
+};
+
+// Idioma
+function applyLanguage(langCode) {
+  currentLang = langCode;
+  const LText = LANG[langCode];
+
+  document.getElementById("appTitle").textContent = LText.title;
+  document.getElementById("dataSourceText").textContent = LText.source;
+  document.getElementById("districtLabel").textContent = LText.filter;
+  document.getElementById("locateBtn").textContent = LText.locate;
+  document.getElementById("aboutLink").textContent = LText.about;
+}
+
+document.getElementById("langSelect").addEventListener("change", (e) => {
+  applyLanguage(e.target.value);
+});
+
+// idioma padrão
+applyLanguage("ca");
