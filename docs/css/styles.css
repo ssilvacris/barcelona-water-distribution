@@ -1,241 +1,222 @@
-/* -----------------------------------------------------------
-   RESET & BASE
------------------------------------------------------------ */
+/* ================================ */
+/*  RESET                           */
+/* ================================ */
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
 }
 
-html, body {
-  height: 100%;
-  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+body {
+  font-family: system-ui, sans-serif;
   background: #fafafa;
   color: #222;
-}
-
-/* Garantir que layout NÃO fique flex horizontal no body */
-body {
-  display: block !important;
-}
-
-/* Links */
-a {
-  color: #0064d2;
-  text-decoration: none;
-}
-a:hover {
-  text-decoration: underline;
-}
-
-/* Pequeno texto */
-.small {
-  font-size: 0.9rem;
-  line-height: 1.35;
-}
-
-
-/* -----------------------------------------------------------
-   LAYOUT PRINCIPAL (SIDEBAR + MAPA)
------------------------------------------------------------ */
-#appLayout {
   display: flex;
   height: 100vh;
-  overflow: hidden;
 }
 
-/* SIDEBAR */
+/* Dark mode */
+body.dark {
+  background: #1a1a1a;
+  color: #eee;
+}
+
+body.dark a {
+  color: #9cd6ff;
+}
+
+/* ================================ */
+/*  LAYOUT PRINCIPAL                */
+/* ================================ */
+#appLayout {
+  display: grid;
+  grid-template-columns: 320px 1fr;
+  height: 100vh;
+}
+
+/* Sidebar */
 #sidebar {
-  width: 320px;
-  flex: 0 0 320px;
-  padding: 1rem;
+  padding: 16px;
   background: #ffffff;
   border-right: 1px solid #ddd;
   overflow-y: auto;
 }
 
-/* MAPA (coluna principal) */
-#map {
-  flex: 1 1 auto;
-  height: 100%;
-  min-width: 0; /* crucial para o mapa expandir */
-  z-index: 1;
+body.dark #sidebar {
+  background: #2b2b2b;
+  border-right: 1px solid #444;
 }
 
+/* MAPA */
+#map {
+  height: 100%;
+  width: 100%;
+}
 
-/* -----------------------------------------------------------
-   TOP BAR (idioma + dark mode)
------------------------------------------------------------ */
+/* ================================ */
+/*   TIPOGRAFIA E ELEMENTOS         */
+/* ================================ */
+
+h1 {
+  font-size: 1.3rem;
+  margin-bottom: 8px;
+}
+
+h2 {
+  font-size: 1.1rem;
+  margin-bottom: 6px;
+}
+
+h3 {
+  font-size: 1rem;
+  margin-bottom: 6px;
+}
+
+.small {
+  font-size: 0.9rem;
+}
+
+.about-link {
+  margin-top: 16px;
+}
+
+/* ================================ */
+/*   TOP BAR                        */
+/* ================================ */
 .top-bar {
   display: flex;
   justify-content: space-between;
-  align-items: center;
-  margin-bottom: 0.75rem;
+  margin-bottom: 16px;
 }
 
 #darkModeBtn {
   background: none;
   border: none;
-  font-size: 1.3rem;
+  font-size: 1.2rem;
   cursor: pointer;
 }
 
 #langSelect {
-  padding: 0.25rem;
-  font-size: 0.85rem;
+  padding: 4px;
+  font-size: 0.9rem;
 }
 
-
-/* -----------------------------------------------------------
-   TÍTULO + SUBTÍTULO
------------------------------------------------------------ */
-#appTitle {
-  font-size: 1.8rem;
-  margin-bottom: 0.4rem;
-  font-weight: 700;
-}
-
-#projectSubtitle {
-  margin-bottom: 0.8rem;
-  line-height: 1.3;
-}
-
-
-/* -----------------------------------------------------------
-   TECH TAGS
------------------------------------------------------------ */
-.stack-tags {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.35rem;
-  margin-bottom: 0.8rem;
-}
-
-.stack-tags span {
-  padding: 0.2rem 0.6rem;
-  border: 1px solid #ccc;
-  font-size: 0.75rem;
-  border-radius: 999px;
-  background: #f4f4f4;
-}
-
-
-/* -----------------------------------------------------------
-   KPI LIST
------------------------------------------------------------ */
-.kpi-list {
-  list-style: none;
-  margin: 0.5rem 0 1rem 0;
-}
-.kpi-list li {
-  margin-bottom: 0.25rem;
-}
-
-
-/* -----------------------------------------------------------
-   FORM & CONTROLS
------------------------------------------------------------ */
-#districtFilter {
-  width: 100%;
-  margin: 0.4rem 0 0.6rem 0;
-  padding: 0.35rem;
-  font-size: 0.95rem;
-}
-
-#locateBtn {
-  width: 100%;
-  padding: 0.6rem;
-  background: #e63946;
-  color: white;
-  font-weight: 600;
-  border: none;
-  border-radius: 6px;
-  cursor: pointer;
-  margin-bottom: 0.4rem;
-}
-
-#locateBtn:hover {
-  background: #d62839;
-}
-
-
-/* -----------------------------------------------------------
-   LISTA DE FONTES
------------------------------------------------------------ */
+/* ================================ */
+/*   LISTA DE FONTES                */
+/* ================================ */
 .fountain-list {
-  margin-top: 0.5rem;
-  max-height: 250px;
-  overflow-y: auto;
-  border: 1px solid #ddd;
-  background: white;
-  border-radius: 6px;
-  padding: 0.4rem;
+  margin-top: 12px;
 }
 
 .fountain-item {
-  padding: 0.4rem 0.2rem;
+  padding: 6px 4px;
+  border-bottom: 1px solid #ddd;
   cursor: pointer;
-  border-bottom: 1px solid #eee;
-}
-
-.fountain-item:last-child {
-  border-bottom: none;
 }
 
 .fountain-item:hover {
   background: #f1f1f1;
 }
 
+body.dark .fountain-item:hover {
+  background: #333;
+}
 
-/* -----------------------------------------------------------
-   INSIGHTS TEASER
------------------------------------------------------------ */
+/* ================================ */
+/*  KPI LIST                        */
+/* ================================ */
+.kpi-list {
+  list-style: none;
+  margin: 12px 0;
+}
+
+.kpi-list li {
+  margin-bottom: 6px;
+}
+
+/* ================================ */
+/*  TEASER DE INSIGHTS              */
+/* ================================ */
 .insights-teaser {
-  margin-top: 1rem;
+  margin: 16px 0;
+  padding: 12px;
+  border-left: 3px solid #0077b6;
+  background: #f5faff;
 }
 
-.insights-teaser h2.small {
-  font-weight: 600;
+body.dark .insights-teaser {
+  border-left: 3px solid #66baff;
+  background: #1e2a33;
 }
 
-.insights-teaser p {
-  margin: 0.3rem 0;
+.insights-teaser h2 {
+  font-size: 1rem;
 }
 
+.insights-teaser a {
+  text-decoration: underline;
+  cursor: pointer;
+  font-weight: bold;
+}
 
-/* -----------------------------------------------------------
-   SEÇÃO DE INSIGHTS (embaixo, full width)
------------------------------------------------------------ */
+/* ================================ */
+/*  SEÇÃO INSIGHTS (full width)     */
+/* ================================ */
 .insights-section {
-  padding: 2rem 1rem;
-  max-width: 960px;
+  padding: 40px;
+  max-width: 1100px;
   margin: 0 auto;
-  background: #fff;
-}
-
-.insights-section h2 {
-  margin-bottom: 1.2rem;
 }
 
 .insight {
-  margin-bottom: 2rem;
-}
-
-.insight h3 {
-  margin-bottom: 0.4rem;
+  margin-bottom: 40px;
 }
 
 .insight img {
   width: 100%;
-  max-width: 100%;
-  border-radius: 8px;
-  margin-top: 0.5rem;
+  max-width: 900px;
   display: block;
+  margin-top: 16px;
+  border-radius: 4px;
+  border: 1px solid #ddd;
 }
 
+body.dark .insight img {
+  border-color: #444;
+}
 
-/* -----------------------------------------------------------
-   DARK MODE
------------------------------------------------------------ */
-body.dark {
-  backgrou
+/* ================================ */
+/*  HR                              */
+/* ================================ */
+hr {
+  margin: 18px 0;
+  border: none;
+  border-bottom: 1px solid #ddd;
+}
+
+body.dark hr {
+  border-bottom-color: #444;
+}
+
+/* ================================ */
+/*   RESPONSIVO                     */
+/* ================================ */
+@media (max-width: 900px) {
+  #appLayout {
+    grid-template-columns: 1fr;
+  }
+
+  #sidebar {
+    height: auto;
+    border-right: none;
+    border-bottom: 1px solid #ccc;
+  }
+
+  #map {
+    height: 60vh;
+  }
+
+  .insights-section {
+    padding: 20px;
+  }
+}

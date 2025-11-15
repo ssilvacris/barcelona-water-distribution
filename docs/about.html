@@ -1,99 +1,168 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ca">
 <head>
-  <meta charset="UTF-8">
-  <title>About – Fonts d'Aigua Barcelona</title>
+  <meta charset="UTF-8" />
+  <title>About · Fonts d'aigua BCN</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-
-  <!-- Importa seu CSS principal -->
-  <link rel="stylesheet" href="css/styles.css">
-
-  <!-- Estilo específico da página About (corrige o layout horizontal) -->
-  <style>
-    body {
-      display: block !important;       /* remove o display:flex usado no site principal */
-      padding: 2rem;
-      max-width: 900px;
-      margin: auto;
-      background: #fafafa;
-    }
-
-    .about-container {
-      display: flex;
-      flex-direction: column;
-      gap: 1.5rem;
-      line-height: 1.6;
-    }
-
-    h1 {
-      font-size: 2rem;
-      margin-bottom: .5rem;
-    }
-
-    h2 {
-      margin-top: 1.5rem;
-      margin-bottom: 0.5rem;
-    }
-
-    ul {
-      padding-left: 1.2rem;
-    }
-
-    .back-link {
-      margin-top: 2rem;
-      font-weight: bold;
-    }
-
-    .author {
-      display: flex;
-      align-items: center;
-      gap: .5rem;
-      font-size: 1rem;
-    }
-  </style>
-
+  <link rel="stylesheet" href="css/styles.css" />
 </head>
-
 <body>
-  <div class="about-container">
+  <div id="appLayout" style="display:block; height:auto;">
+    <div id="sidebar" style="width:100%; border-right:none; border-bottom:1px solid #ddd;">
+      <div class="top-bar">
+        <a href="index.html" class="small">&larr; Back to map</a>
 
-    <h1>About This Project</h1>
+        <select id="aboutLangSelect" aria-label="Language">
+          <option value="ca">Català</option>
+          <option value="en">English</option>
+          <option value="es">Español</option>
+        </select>
+      </div>
 
-    <p>
-      This project explores the distribution of public drinking fountains in Barcelona using open data 
-      from Open Data BCN (2019–2025). The analysis was performed using Python and published through 
-      an interactive map built with Leaflet.js and simple frontend technologies.
-    </p>
+      <main id="aboutMain" class="insights-section" style="max-width:960px; margin:0 auto;">
+        <h1 id="aboutTitle"></h1>
 
-    <h2>Dataset</h2>
-    <p>
-      The dataset contains <strong>1,736 fountains</strong> across Barcelona’s 10 districts.  
-      The web application allows users to explore this information dynamically, filter by district, 
-      locate the nearest fountain and understand spatial patterns of accessibility.
-    </p>
+        <section>
+          <h2 id="aboutOverviewHeading"></h2>
+          <p class="small" id="aboutOverviewText"></p>
+        </section>
 
-    <h2>Full Project</h2>
-    <p>
-      Full analysis, source code and documentation are available on GitHub and Medium:
-    </p>
-    <ul>
-      <li><a href="https://github.com/ssilvacris/barcelona-water-distribution" target="_blank">
-        GitHub Repository
-      </a></li>
-      <li><a href="https://medium.com/@cristianesilva_10348" target="_blank">
-        Medium Articles
-      </a></li>
-    </ul>
+        <section>
+          <h2 id="aboutDataHeading"></h2>
+          <p class="small" id="aboutDataText"></p>
+          <ul class="small" id="aboutDataList"></ul>
+        </section>
 
-    <h2>Author</h2>
-    <p class="author">
-      <strong>Cristiane Silva 👩🏾‍💻</strong>
-    </p>
+        <section>
+          <h2 id="aboutDSHeading"></h2>
+          <ul class="small" id="aboutDSList"></ul>
+        </section>
 
-    <p class="back-link">
-      <a href="index.html">⬅ Back to the Map</a>
-    </p>
-
+        <section>
+          <h2 id="aboutAuthorHeading"></h2>
+          <p class="small" id="aboutAuthorText"></p>
+          <p class="small">
+            <a href="https://github.com/ssilvacris/barcelona-water-distribution" target="_blank" rel="noopener">
+              GitHub repository
+            </a>
+          </p>
+        </section>
+      </main>
+    </div>
   </div>
+
+  <script>
+    const ABOUT_LANG = {
+      ca: {
+        title: "Sobre aquest projecte",
+        overviewHeading: "Visió general",
+        overviewText: "Aquest projecte analitza la distribució i evolució de les fonts d'aigua potable a Barcelona entre 2019 i 2024. Combinant dades de fonts i població per districte, investiga si l'accés a l'aigua pública evoluciona de manera equitativa a la ciutat.",
+        dataHeading: "Dades i metodologia",
+        dataText: "L'anàlisi es basa en dades obertes de l'Ajuntament de Barcelona i segueix un flux complet de preparació i explotació de dades.",
+        dataList: [
+          "Catàleg de fonts públiques (2019–2024), Open Data BCN.",
+          "Població per districte i any, Padró Municipal d'Habitants.",
+          "Taula de correspondència de districtes per a l'agregació espacial.",
+          "Càlcul de l'indicador de fonts per 1.000 habitants i anàlisi de variabilitat temporal."
+        ],
+        dsHeading: "Què he fet com a Data Scientist en aquest projecte",
+        dsList: [
+          "Disseny del pipeline de dades en Python (descàrrega, neteja, unificació i enginyeria de variables).",
+          "Anàlisi exploratòria de dades amb Pandas, Matplotlib i Seaborn.",
+          "Construcció de visualitzacions geoespacials amb GeoPandas i Folium.",
+          "Desenvolupament del mapa web interactiu amb Leaflet.js i integració de filtres i geolocalització.",
+          "Elaboració d'insights sobre accessibilitat, equitat territorial i estabilitat temporal."
+        ],
+        authorHeading: "Sobre mi",
+        authorText: "Sóc l'enginyera Cristiane Silva, en procés de transició cap a la Data Science, resident a Barcelona. Estic cursant un màster en Data Science i tinc experiència professional en enginyeria i projectes offshore. M'interessa especialment treballar amb dades urbanes, anàlisi geoespacial i aplicació de models predictius a problemes reals."
+      },
+
+      en: {
+        title: "About this project",
+        overviewHeading: "Overview",
+        overviewText: "This project analyses the distribution and evolution of public drinking fountains in Barcelona between 2019 and 2024. By combining fountain data with population by district, it investigates whether access to public water is evolving equitably across the city.",
+        dataHeading: "Data and methodology",
+        dataText: "The analysis is based on open data from the Barcelona City Council and follows a complete data workflow.",
+        dataList: [
+          "Public fountains dataset (2019–2024) from Open Data BCN.",
+          "Population by district and year from the Municipal Population Register.",
+          "District reference table for spatial aggregation.",
+          "Computation of the fountains-per-1,000-inhabitants indicator and temporal variability analysis."
+        ],
+        dsHeading: "What I did as a Data Scientist in this project",
+        dsList: [
+          "Designed the data pipeline in Python (download, cleaning, merging and feature engineering).",
+          "Performed exploratory data analysis using Pandas, Matplotlib and Seaborn.",
+          "Built geospatial visualisations with GeoPandas and Folium.",
+          "Implemented the interactive web map with Leaflet.js, including filters and geolocation.",
+          "Derived insights on accessibility, territorial equity and temporal stability."
+        ],
+        authorHeading: "About me",
+        authorText: "I am Cristiane Silva, an engineer transitioning into Data Science and currently based in Barcelona. I am studying a Master's in Data Science and have professional experience in engineering and offshore projects. My main interests are urban data, geospatial analysis and applying predictive models to real-world problems."
+      },
+
+      es: {
+        title: "Sobre este proyecto",
+        overviewHeading: "Visión general",
+        overviewText: "Este proyecto analiza la distribución y evolución de las fuentes de agua potable en Barcelona entre 2019 y 2024. Combinando datos de fuentes y población por distrito, investiga si el acceso al agua pública está evolucionando de forma equitativa en la ciudad.",
+        dataHeading: "Datos y metodología",
+        dataText: "El análisis se basa en datos abiertos del Ayuntamiento de Barcelona y sigue un flujo de trabajo completo de preparación y explotación de datos.",
+        dataList: [
+          "Conjunto de datos de fuentes públicas (2019–2024) de Open Data BCN.",
+          "Población por distrito y año del Padrón Municipal de Habitantes.",
+          "Tabla de referencia de distritos para la agregación espacial.",
+          "Cálculo del indicador de fuentes por 1.000 habitantes y análisis de variabilidad temporal."
+        ],
+        dsHeading: "Qué he hecho como Data Scientist en este proyecto",
+        dsList: [
+          "Diseño del pipeline de datos en Python (descarga, limpieza, unificación y generación de variables).",
+          "Análisis exploratorio de datos con Pandas, Matplotlib y Seaborn.",
+          "Construcción de visualizaciones geoespaciales con GeoPandas y Folium.",
+          "Desarrollo del mapa web interactivo con Leaflet.js e integración de filtros y geolocalización.",
+          "Elaboración de insights sobre accesibilidad, equidad territorial y estabilidad temporal."
+        ],
+        authorHeading: "Sobre mí",
+        authorText: "Soy Cristiane Silva, ingeniera en proceso de transición hacia la Data Science y residente en Barcelona. Estoy cursando un máster en Data Science y tengo experiencia profesional en ingeniería y proyectos offshore. Me interesa especialmente trabajar con datos urbanos, análisis geoespacial y modelos predictivos aplicados a problemas reales."
+      }
+    };
+
+    function applyAboutLanguage(lang) {
+      const t = ABOUT_LANG[lang];
+
+      document.getElementById("aboutTitle").textContent = t.title;
+      document.getElementById("aboutOverviewHeading").textContent = t.overviewHeading;
+      document.getElementById("aboutOverviewText").textContent = t.overviewText;
+
+      document.getElementById("aboutDataHeading").textContent = t.dataHeading;
+      document.getElementById("aboutDataText").textContent = t.dataText;
+      const dataListEl = document.getElementById("aboutDataList");
+      dataListEl.innerHTML = "";
+      t.dataList.forEach(item => {
+        const li = document.createElement("li");
+        li.textContent = item;
+        dataListEl.appendChild(li);
+      });
+
+      document.getElementById("aboutDSHeading").textContent = t.dsHeading;
+      const dsListEl = document.getElementById("aboutDSList");
+      dsListEl.innerHTML = "";
+      t.dsList.forEach(item => {
+        const li = document.createElement("li");
+        li.textContent = item;
+        dsListEl.appendChild(li);
+      });
+
+      document.getElementById("aboutAuthorHeading").textContent = t.authorHeading;
+      document.getElementById("aboutAuthorText").textContent = t.authorText;
+    }
+
+    const aboutLangSelect = document.getElementById("aboutLangSelect");
+    aboutLangSelect.addEventListener("change", (e) => {
+      applyAboutLanguage(e.target.value);
+    });
+
+    // idioma por defeito
+    applyAboutLanguage("ca");
+  </script>
 </body>
 </html>
