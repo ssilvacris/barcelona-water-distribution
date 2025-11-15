@@ -1,7 +1,7 @@
 # Urban Water Access in Barcelona
 
 **Author:** Cristiane Silva  
-**Keywords:** Data Analysis · Geospatial Mapping · Machine Learning · Python · Folium · Seaborn  
+**Keywords:** Data Analysis · Geospatial Mapping · Python · Folium · Seaborn  
 
 ---
 
