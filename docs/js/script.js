@@ -295,7 +295,7 @@ document.getElementById('darkModeBtn').onclick = () => {
   document.body.classList.toggle('dark');
 };
 
-// Idioma (ÚNICA função applyLanguage)
+// Idioma (única função applyLanguage)
 function applyLanguage(langCode) {
   currentLang = langCode;
   const LText = LANG[langCode];
