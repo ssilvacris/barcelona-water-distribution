@@ -1,12 +1,12 @@
 <!DOCTYPE html>
-<html lang="ca">
+<html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>Fonts d'aigua Barcelona 2025</title>
+  <title>Barcelona Water Fountains (2025)</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <!-- SEO / Open Graph -->
-  <meta name="title" content="Fonts d'Aigua Barcelona | Interactive Map 2025">
+  <meta name="title" content="Barcelona Water Fountains | Interactive Map 2025">
   <meta name="description" content="Explore all public drinking fountains in Barcelona through an interactive map using open data from Open Data BCN. Filter by district, find the nearest fountain, and learn more about urban water accessibility.">
   <meta name="keywords" content="Barcelona, water fountains, open data, Leaflet, geolocation, urban planning, data visualization, GIS">
   <meta name="author" content="Cristiane Silva">
@@ -27,39 +27,20 @@
 
   <!-- PapaParse -->
   <script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
-
-  <!-- PWA manifest  -->
-  <link rel="manifest" href="manifest.json">
-
-  <!-- Service Worker  -->
-  <script>
-    if ("serviceWorker" in navigator) {
-      window.addEventListener("load", function () {
-        navigator.serviceWorker.register("service-worker.js");
-      });
-    }
-  </script>
 </head>
 
 <body>
-  <!-- LAYOUT PRINCIPAL: sidebar + mapa -->
+  <!-- MAIN LAYOUT: sidebar + map -->
   <div id="appLayout">
     <div id="sidebar">
       <div class="top-bar">
-        <button id="darkModeBtn" title="Toggle theme">🌓</button>
-
-        <select id="langSelect" aria-label="Language">
-          <option value="ca">Català</option>
-          <option value="en">English</option>
-          <option value="es">Español</option>
-        </select>
+        <h1 id="appTitle">Barcelona Water Fountains (2025)</h1>
+        <button id="darkModeBtn" title="Toggle dark mode">🌓</button>
       </div>
 
-      <h1 id="appTitle">Fonts d'aigua BCN (2025)</h1>
-
       <p id="projectSubtitle" class="small">
-        Mapa interactiu de fonts d'aigua potable a Barcelona (2019–2024), integrant dades de fonts
-        i de població per districte per analitzar l'accés a l'aigua pública.
+        Interactive map of public drinking fountains in Barcelona using open data.
+        Filter by district, explore the city and find the nearest fountain to your location.
       </p>
 
       <div class="stack-tags">
@@ -67,110 +48,46 @@
         <span>Pandas</span>
         <span>GeoPandas</span>
         <span>Leaflet.js</span>
-        <span>Data Visualization</span>
+        <span>Open Data BCN</span>
       </div>
 
-      <p class="small" id="dataSourceText">Dades: Open Data Barcelona.</p>
+      <p class="small" id="dataSourceText">Data: Open Data BCN (Barcelona City Council).</p>
 
       <p id="countInfo" class="small"></p>
       <ul class="kpi-list small">
-        <li><strong>1.736</strong> fonts d'aigua mapejades</li>
-        <li><strong>10</strong> districtes</li>
-        <li><strong>Indicador clau:</strong> fonts per 1.000 habitants</li>
+        <li><strong>1,736</strong> fountains mapped</li>
+        <li><strong>10</strong> districts</li>
       </ul>
 
       <hr />
 
-      <label for="districtFilter" id="districtLabel">Filtrar per districte</label>
+      <label for="districtFilter" id="districtLabel">Filter by district</label>
       <select id="districtFilter">
-        <option value="">— Tots —</option>
+        <option value="">— All —</option>
       </select>
 
-      <button id="locateBtn">📍 Mostrar font més propera</button>
+      <button id="locateBtn">📍 Show nearest fountain</button>
       <p id="nearestInfo" class="small"></p>
 
       <div class="fountain-list" id="fountainList"></div>
 
       <hr />
 
-      <!-- TEASER DE INSIGHTS NA SIDEBAR -->
-      <div class="insights-teaser small">
-        <h2 id="insightsTeaserTitle" class="small">Insights de dades</h2>
-        <p id="insightsTeaserText">
-          Consulta els gràfics de fonts per districte i fonts per 1.000 habitants per entendre millor
-          les possibles desigualtats d'accés a l'aigua pública a Barcelona.
-        </p>
-        <a href="#insights" class="small" id="insightsTeaserLink">Veure els insights</a>
-      </div>
-
-      <hr />
-
       <p class="small about-link">
         <a href="about.html" id="aboutLink" target="_blank">
-          Sobre aquest projecte i l'anàlisi de dades
+          About this project and data analysis
         </a>
       </p>
     </div>
 
-    <!-- MAPA PRINCIPAL -->
+    <!-- MAP -->
     <div id="map"></div>
   </div>
-
-  <!-- SEÇÃO DE INSIGHTS  -->
-  <section id="insights" class="insights-section">
-    <h2 id="insightsTitle">Insights de dades</h2>
-
-    <article class="insight">
-      <h3 id="insights1Title">Fonts per districte (2024)</h3>
-      <p class="small" id="insights1Text">
-        Alguns districtes concentren moltes més fonts que altres en termes absoluts.
-        Quan normalitzem per població, la classificació canvia i revela diferències en l'accés real.
-      </p>
-      <img src="outputs/water_fountains_districts.png"
-           alt="Gràfic de barres: fonts per districte a Barcelona, any 2024" />
-    </article>
-
-    <article class="insight">
-      <h3 id="insights2Title">Fonts per 1.000 habitants</h3>
-      <p class="small" id="insights2Text">
-        L'indicador de fonts per 1.000 habitants mostra disparitats rellevants entre districtes,
-        especialment quan es comparen zones centrals i perifèriques.
-      </p>
-      <img src="outputs/wf_per_1000.png"
-           alt="Gràfic: fonts per mil habitants per districte" />
-    </article>
-
-    <article class="insight">
-      <h3 id="insights3Title">Variabilitat temporal de l’accessibilitat (2019–2024)</h3>
-      <p class="small" id="insights3Text">
-        La desviació estàndard del nombre de fonts per 1.000 habitants permet identificar quins
-        districtes presenten majors fluctuacions al llarg del temps.
-      </p>
-      <img src="outputs/water_variability.png"
-           alt="Gràfic: variabilitat temporal de fonts per 1.000 habitants per districte" />
-    </article>
-
-    <article class="insight">
-      <h3 id="insightsSummaryTitle">Resum final de l’anàlisi</h3>
-      <p class="small" id="insightsSummaryText1">
-        La combinació d’indicadors absoluts, valors per càpita i variabilitat temporal ofereix una
-        visió completa de l’accessibilitat a les fonts públiques.
-      </p>
-      <p class="small" id="insightsSummaryText2">
-        La normalització revela desigualtats territorials que no són visibles quan només es
-        consideren els valors absoluts.
-      </p>
-      <p class="small" id="insightsSummaryText3">
-        L’estudi de la variabilitat temporal permet identificar patrons d’estabilitat i canvi útils
-        per a la planificació urbana i la gestió pública.
-      </p>
-    </article>
-  </section>
 
   <!-- Leaflet JS -->
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" crossorigin=""></script>
 
-  <!-- script principal  -->
+  <!-- Main JS -->
   <script src="js/script.js"></script>
 </body>
 </html>
