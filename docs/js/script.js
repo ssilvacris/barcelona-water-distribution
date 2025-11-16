@@ -1,6 +1,7 @@
-// Caminho do CSV dentro de assets/data
+// Path to the CSV file inside assets/data
 const CSV_FILE = 'assets/data/2025_fonts_beure_with_district.csv';
 
+// Optional mapping from code prefix to district (fallback)
 const codeToDistrict = {
   "01": "Ciutat Vella",
   "02": "Eixample",
@@ -14,67 +15,8 @@ const codeToDistrict = {
   "10": "Sant Martí",
 };
 
-const LANG = {
-  ca: {
-    title: "Fonts d'aigua BCN (2025)",
-    source: "Dades: Open Data Barcelona.",
-    filter: "Filtrar per districte",
-    locate: "📍 Mostrar font més propera",
-    nearestPrefix: "Font més propera",
-    about: "Sobre aquest projecte i l'anàlisi de dades",
-    geoNotSupported: "Geolocalització no suportada.",
-    allOption: "— Tots —",
-    visibleLabel: "Fonts visibles",
-    youAreHere: "Ets aquí",
-
-    // Teaser (sidebar)
-    insightsTitle: "Insights de dades",
-    insightsText:
-      "Consulta els gràfics de fonts per districte i fonts per 1.000 habitants per entendre millor les possibles desigualtats d'accés a l'aigua pública a Barcelona.",
-    insightsLink: "Veure els insights"
-  },
-
-  en: {
-    title: "Barcelona Water Fountains (2025)",
-    source: "Data: Open Data BCN.",
-    filter: "Filter by district",
-    locate: "📍 Show nearest fountain",
-    nearestPrefix: "Nearest fountain",
-    about: "About this project and data analysis",
-    geoNotSupported: "Geolocation not supported.",
-    allOption: "— All —",
-    visibleLabel: "Visible fountains",
-    youAreHere: "You are here",
-
-    insightsTitle: "Data insights",
-    insightsText:
-      "Explore charts showing fountains per district and per 1,000 inhabitants to better understand differences in public water access across Barcelona.",
-    insightsLink: "View insights"
-  },
-
-  es: {
-    title: "Fuentes de Agua de Barcelona (2025)",
-    source: "Datos: Open Data Barcelona.",
-    filter: "Filtrar por distrito",
-    locate: "📍 Mostrar fuente más cercana",
-    nearestPrefix: "Fuente más cercana",
-    about: "Sobre este proyecto y el análisis de datos",
-    geoNotSupported: "Geolocalización no soportada.",
-    allOption: "— Todos —",
-    visibleLabel: "Fuentes visibles",
-    youAreHere: "Estás aquí",
-
-    insightsTitle: "Insights de datos",
-    insightsText:
-      "Consulta los gráficos de fuentes por distrito y por 1.000 habitantes para entender mejor las posibles desigualdades de acceso al agua pública en Barcelona.",
-    insightsLink: "Ver insights"
-  }
-};
-
-let currentLang = "ca";
-
-// inicializa mapa
-const map = L.map('map').setView([41.387, 2.17], 12);
+// Initialize Leaflet map
+const map = L.map('map').setView([41.387, 2.17], 12); // Barcelona center
 L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
   maxZoom: 19,
   attribution: '&copy; OpenStreetMap'
@@ -83,13 +25,13 @@ L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
 let allFountains = [];
 let markersLayer = L.layerGroup().addTo(map);
 
-// helpers de DOM
+// DOM helpers
 const countInfoEl = document.getElementById('countInfo');
 const nearestInfoEl = document.getElementById('nearestInfo');
 const districtFilterEl = document.getElementById('districtFilter');
 const locateBtnEl = document.getElementById('locateBtn');
 
-// carrega CSV
+// Load CSV with PapaParse
 fetch(CSV_FILE)
   .then(res => res.text())
   .then(csvText => {
@@ -122,9 +64,9 @@ fetch(CSV_FILE)
       }
     });
   })
-  .catch(err => console.error("Erro ao carregar CSV:", err));
+  .catch(err => console.error("Error loading CSV:", err));
 
-// renderização dos marcadores
+// Render markers and list
 function renderFountains(selectedDistrict = "") {
   markersLayer.clearLayers();
   const listEl = document.getElementById('fountainList');
@@ -138,12 +80,12 @@ function renderFountains(selectedDistrict = "") {
   filtered.forEach(f => {
     const marker = L.marker([f.lat, f.lon]).addTo(markersLayer);
     marker.bindPopup(
-      `<b>${f.name || "Font"}</b><br>${f.street || ""} ${f.num || ""}<br><i>${f.district || ""}</i>`
+      `<b>${f.name || "Fountain"}</b><br>${f.street || ""} ${f.num || ""}<br><i>${f.district || ""}</i>`
     );
 
     const item = document.createElement('div');
     item.className = 'fountain-item';
-    item.textContent = f.name ? f.name : `Font ${f.code}`;
+    item.textContent = f.name ? f.name : `Fountain ${f.code}`;
     item.onclick = () => {
       map.setView([f.lat, f.lon], 17);
       marker.openPopup();
@@ -161,16 +103,10 @@ function renderFountains(selectedDistrict = "") {
 
 function updateCountInfo(visible, total) {
   if (!countInfoEl) return;
-  const LText = LANG[currentLang];
-
-  // guarda para reaproveitar na troca de idioma
-  countInfoEl.dataset.visible = String(visible);
-  countInfoEl.dataset.total = String(total);
-
-  countInfoEl.textContent = `${LText.visibleLabel}: ${visible} | Total: ${total}`;
+  countInfoEl.textContent = `Visible fountains: ${visible} | Total: ${total}`;
 }
 
-// filtro distrital
+// Populate district filter
 function populateDistrictFilter() {
   if (!districtFilterEl) return;
 
@@ -181,7 +117,7 @@ function populateDistrictFilter() {
   districtFilterEl.innerHTML = "";
   const firstOpt = document.createElement("option");
   firstOpt.value = "";
-  firstOpt.textContent = LANG[currentLang].allOption;
+  firstOpt.textContent = "— All —";
   districtFilterEl.appendChild(firstOpt);
 
   districts.forEach(d => {
@@ -198,36 +134,34 @@ if (districtFilterEl) {
   });
 }
 
-// helper para mensagens da geolocalização
+// Helper for geolocation messages
 function setNearestMessage(msg) {
   if (nearestInfoEl) {
     nearestInfoEl.textContent = msg;
   }
 }
 
-// geolocalização
+// Geolocation: find nearest fountain
 if (locateBtnEl) {
   locateBtnEl.addEventListener('click', () => {
-    const LText = LANG[currentLang];
-
     if (!navigator.geolocation) {
-      setNearestMessage(LText.geoNotSupported);
-      alert(LText.geoNotSupported);
+      setNearestMessage("Geolocation not supported by your browser.");
+      alert("Geolocation not supported by your browser.");
       return;
     }
 
-    setNearestMessage("Obtenint la teva ubicació...");
+    setNearestMessage("Getting your location...");
 
     navigator.geolocation.getCurrentPosition(
       pos => {
         const userLat = pos.coords.latitude;
         const userLon = pos.coords.longitude;
 
-        setNearestMessage("Ubicació trobada. Calculant la font més propera...");
+        setNearestMessage("Location found. Searching nearest fountain...");
 
         L.circleMarker([userLat, userLon], { radius: 6, color: 'blue' })
           .addTo(map)
-          .bindPopup(LText.youAreHere)
+          .bindPopup("You are here")
           .openPopup();
         map.setView([userLat, userLon], 14);
 
@@ -239,29 +173,27 @@ if (locateBtnEl) {
           }).addTo(map);
 
           setNearestMessage(
-            `${LText.nearestPrefix}: ${nearest.name || nearest.code} – ${nearest.distance.toFixed(0)} m (${nearest.district || "—"})`
+            `Nearest fountain: ${nearest.name || nearest.code} – ${nearest.distance.toFixed(0)} m (${nearest.district || "—"})`
           );
 
           L.marker([nearest.lat, nearest.lon])
             .addTo(map)
             .bindPopup(
-              `<b>${nearest.name || "Font"}</b><br>${nearest.street || ""} ${nearest.num || ""}<br><i>${nearest.district || ""}</i>`
+              `<b>${nearest.name || "Fountain"}</b><br>${nearest.street || ""} ${nearest.num || ""}<br><i>${nearest.district || ""}</i>`
             )
             .openPopup();
         } else {
-          setNearestMessage("No s'ha trobat cap font propera.");
+          setNearestMessage("No nearby fountain found.");
         }
       },
       error => {
-        setNearestMessage(
-          "No s'ha pogut obtenir la ubicació (" + error.message + ")."
-        );
+        setNearestMessage("Could not get your location: " + error.message);
       }
     );
   });
 }
 
-// distância
+// Distance: Haversine formula
 function findNearestFountain(lat, lon, fountains) {
   let nearest = null;
   let minDist = Infinity;
@@ -275,9 +207,8 @@ function findNearestFountain(lat, lon, fountains) {
   return nearest;
 }
 
-// fórmula de Haversine
 function haversine(lat1, lon1, lat2, lon2) {
-  const R = 6371e3;
+  const R = 6371e3; // meters
   const toRad = deg => deg * Math.PI / 180;
   const dLat = toRad(lat2 - lat1);
   const dLon = toRad(lon2 - lon1);
@@ -290,46 +221,10 @@ function haversine(lat1, lon1, lat2, lon2) {
   return R * c;
 }
 
-// Dark mode
-document.getElementById('darkModeBtn').onclick = () => {
-  document.body.classList.toggle('dark');
-};
-
-// Idioma (única função applyLanguage)
-function applyLanguage(langCode) {
-  currentLang = langCode;
-  const LText = LANG[langCode];
-
-  document.getElementById("appTitle").textContent = LText.title;
-  document.getElementById("dataSourceText").textContent = LText.source;
-  document.getElementById("districtLabel").textContent = LText.filter;
-  document.getElementById("locateBtn").textContent = LText.locate;
-  document.getElementById("aboutLink").textContent = LText.about;
-
-  // teaser na sidebar
-  const tTitle = document.getElementById("insightsTeaserTitle");
-  const tText = document.getElementById("insightsTeaserText");
-  const tLink = document.getElementById("insightsTeaserLink");
-  if (tTitle) tTitle.textContent = LText.insightsTitle;
-  if (tText) tText.textContent = LText.insightsText;
-  if (tLink) tLink.textContent = LText.insightsLink;
-
-  // atualizar texto "Fonts visibles"
-  if (countInfoEl) {
-    const visible = parseInt(countInfoEl.dataset.visible || allFountains.length, 10) || allFountains.length;
-    const total = parseInt(countInfoEl.dataset.total || allFountains.length, 10) || allFountains.length;
-    updateCountInfo(visible, total);
-  }
-
-  // atualizar opção "todos" no filtro
-  if (districtFilterEl && districtFilterEl.options.length > 0) {
-    districtFilterEl.options[0].textContent = LText.allOption;
-  }
+// Dark mode toggle
+const darkBtn = document.getElementById('darkModeBtn');
+if (darkBtn) {
+  darkBtn.addEventListener('click', () => {
+    document.body.classList.toggle('dark');
+  });
 }
-
-document.getElementById("langSelect").addEventListener("change", (e) => {
-  applyLanguage(e.target.value);
-});
-
-// idioma padrão
-applyLanguage("ca");
