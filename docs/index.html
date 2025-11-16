@@ -178,6 +178,19 @@
                     </select>
                 </div>
             </div>
+            <!-- New row: Find nearest fountain button -->
+            <div class="row align-items-center mt-3">
+                <div class="col-md-8">
+                    <small class="text-muted">
+                        Allow location access to find the nearest public drinking fountain to your current position.
+                    </small>
+                </div>
+                <div class="col-md-4 text-md-end mt-2 mt-md-0">
+                    <button class="btn btn-primary w-100" id="find-nearest-btn">
+                        Find nearest fountain to me
+                    </button>
+                </div>
+            </div>
         </div>
         <div id="map"></div>
         <div class="row mt-3">
@@ -186,6 +199,7 @@
                     <div class="card-body">
                         <h5 class="card-title">📊 Map Statistics</h5>
                         <p class="card-text" id="map-stats">Loading statistics...</p>
+                        <p class="card-text" id="nearest-info"></p>
                     </div>
                 </div>
             </div>
@@ -390,7 +404,7 @@
                     <p class="mb-0"><small>Created by <strong>Cristiane Silva</strong></small></p>
                 </div>
                 <div class="col-md-6 text-md-end mt-3 mt-md-0">
-                    <p>Data Source: Barcelona Open Data Portal</p>
+                    <p>Data Source: Barcelona Open Data Portal: <a href="https://opendata-ajuntament.barcelona.cat" class="text-white" target="_blank">OpenDataBCN</a></p>
                     <p>Project Repository: <a href="https://github.com/ssilvacris/barcelona-water-distribution" class="text-white" target="_blank">GitHub</a></p>
                     <p>Full Analysis: <a href="https://medium.com/@cristianesilva_10348/what-open-data-reveals-about-public-water-access-in-barcelona-2019-2024-6ab87302cb5b" class="text-white" target="_blank">Medium Article</a></p>
                 </div>
@@ -404,8 +418,8 @@
 
     <script>
         // ---- CONFIG: CSV paths (must exist in the same repo) ----
-        const FOUNTAINS_CSV = 'fonts_beure_2019_2024.csv';
-        const POPULATION_CSV = 'poplacio_2019_2024.csv';
+        const FOUNTAINS_CSV = 'assets/data/fonts_beure_2019_2024.csv';
+        const POPULATION_CSV = 'assets/data/poplacio_2019_2024.csv';
 
         // Mapping from first two digits of CODI to district name
         const districtCodeToName = {
@@ -427,6 +441,7 @@
 
         let mapInstance;
         let markersLayer;
+        let userLocationLayer;              // layer for user + nearest fountain markers
 
         // Chart instances (for possible future updates)
         let fountainsByDistrictChart;
@@ -492,9 +507,16 @@
             }).addTo(mapInstance);
 
             markersLayer = L.layerGroup().addTo(mapInstance);
+            userLocationLayer = L.layerGroup().addTo(mapInstance);
 
             populateFilters();
             applyFiltersAndUpdate();
+
+            // Bind nearest-fountain button
+            const nearestBtn = document.getElementById('find-nearest-btn');
+            if (nearestBtn) {
+                nearestBtn.addEventListener('click', findNearestFountain);
+            }
         }
 
         function populateFilters() {
@@ -565,6 +587,105 @@
                 Years in view: ${yearsSet.size ? Array.from(yearsSet).sort().join(', ') : '-'}
             `;
         }
+
+        // ---- Nearest fountain functionality ----
+
+        // Haversine distance in km
+        function haversineDistance(lat1, lon1, lat2, lon2) {
+            const R = 6371; // Earth radius in km
+            const toRad = deg => deg * Math.PI / 180;
+            const dLat = toRad(lat2 - lat1);
+            const dLon = toRad(lon2 - lon1);
+            const a =
+                Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+                Math.cos(toRad(lat1)) * Math.cos(toRad(lat2)) *
+                Math.sin(dLon / 2) * Math.sin(dLon / 2);
+            const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+            return R * c;
+        }
+
+        function findNearestFountain() {
+            if (!navigator.geolocation) {
+                alert('Geolocation is not supported by your browser.');
+                return;
+            }
+
+            if (!fountainsData || fountainsData.length === 0) {
+                alert('Fountain data is not loaded yet.');
+                return;
+            }
+
+            navigator.geolocation.getCurrentPosition(
+                position => {
+                    const { latitude, longitude } = position.coords;
+
+                    // Clear previous markers for user + nearest fountain
+                    userLocationLayer.clearLayers();
+
+                    // Add user marker
+                    const userMarker = L.circleMarker([latitude, longitude], {
+                        radius: 8,
+                        color: 'red',
+                        fillColor: 'red',
+                        fillOpacity: 0.8
+                    }).addTo(userLocationLayer).bindPopup('You are here');
+                    userMarker.openPopup();
+
+                    // Find nearest fountain (among all fountains)
+                    let minDist = Infinity;
+                    let nearest = null;
+
+                    fountainsData.forEach(f => {
+                        const d = haversineDistance(latitude, longitude, f.lat, f.lng);
+                        if (d < minDist) {
+                            minDist = d;
+                            nearest = f;
+                        }
+                    });
+
+                    if (!nearest) {
+                        alert('Could not find a nearest fountain.');
+                        return;
+                    }
+
+                    // Add marker for nearest fountain
+                    const nearestMarker = L.circleMarker([nearest.lat, nearest.lng], {
+                        radius: 8,
+                        color: 'blue',
+                        fillColor: 'blue',
+                        fillOpacity: 0.8
+                    }).addTo(userLocationLayer).bindPopup(
+                        `<b>${nearest.name}</b><br>` +
+                        `District: ${nearest.district}<br>` +
+                        `Year: ${nearest.year}<br>` +
+                        `Approx. distance: ${minDist.toFixed(2)} km`
+                    );
+
+                    // Fit map to show both points
+                    const bounds = L.latLngBounds(
+                        [latitude, longitude],
+                        [nearest.lat, nearest.lng]
+                    );
+                    mapInstance.fitBounds(bounds, { padding: [50, 50] });
+
+                    // Update nearest info text
+                    const nearestInfoEl = document.getElementById('nearest-info');
+                    nearestInfoEl.innerHTML = `
+                        Nearest fountain: <strong>${nearest.name}</strong> (${nearest.district}),
+                        approx. ${minDist.toFixed(2)} km away.
+                    `;
+                },
+                error => {
+                    let message = 'Unable to retrieve your location.';
+                    if (error.code === error.PERMISSION_DENIED) {
+                        message = 'Location permission denied. Unable to find the nearest fountain.';
+                    }
+                    alert(message);
+                }
+            );
+        }
+
+        // ---- Charts ----
 
         function computeAggregates() {
             const fountainsByDistrictLatest = {};
@@ -761,3 +882,5 @@
     </script>
 </body>
 </html>
+
+
