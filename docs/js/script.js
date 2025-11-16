@@ -1,3 +1,19 @@
+// Caminho do CSV dentro de assets/data
+const CSV_FILE = 'assets/data/2025_fonts_beure_with_district.csv';
+
+const codeToDistrict = {
+  "01": "Ciutat Vella",
+  "02": "Eixample",
+  "03": "Sants-Montjuïc",
+  "04": "Les Corts",
+  "05": "Sarrià-Sant Gervasi",
+  "06": "Gràcia",
+  "07": "Horta-Guinardó",
+  "08": "Nou Barris",
+  "09": "Sant Andreu",
+  "10": "Sant Martí",
+};
+
 const LANG = {
   ca: {
     title: "Fonts d'aigua BCN (2025)",
@@ -5,12 +21,13 @@ const LANG = {
     filter: "Filtrar per districte",
     locate: "📍 Mostrar font més propera",
     nearestPrefix: "Font més propera",
-    about: "Sobre aquest projecte",
+    about: "Sobre aquest projecte i l'anàlisi de dades",
     geoNotSupported: "Geolocalització no suportada.",
     allOption: "— Tots —",
     visibleLabel: "Fonts visibles",
+    youAreHere: "Ets aquí",
 
-    // 🟦 Teaser (CAT)
+    // Teaser (sidebar)
     insightsTitle: "Insights de dades",
     insightsText:
       "Consulta els gràfics de fonts per districte i fonts per 1.000 habitants per entendre millor les possibles desigualtats d'accés a l'aigua pública a Barcelona.",
@@ -23,12 +40,12 @@ const LANG = {
     filter: "Filter by district",
     locate: "📍 Show nearest fountain",
     nearestPrefix: "Nearest fountain",
-    about: "About this project",
+    about: "About this project and data analysis",
     geoNotSupported: "Geolocation not supported.",
     allOption: "— All —",
     visibleLabel: "Visible fountains",
+    youAreHere: "You are here",
 
-    // 🟦 Teaser (EN)
     insightsTitle: "Data insights",
     insightsText:
       "Explore charts showing fountains per district and per 1,000 inhabitants to better understand differences in public water access across Barcelona.",
@@ -36,25 +53,23 @@ const LANG = {
   },
 
   es: {
-    title: "Fuentes de agua de Barcelona (2025)",
+    title: "Fuentes de Agua de Barcelona (2025)",
     source: "Datos: Open Data Barcelona.",
     filter: "Filtrar por distrito",
     locate: "📍 Mostrar fuente más cercana",
     nearestPrefix: "Fuente más cercana",
-    about: "Sobre este proyecto",
+    about: "Sobre este proyecto y el análisis de datos",
     geoNotSupported: "Geolocalización no soportada.",
     allOption: "— Todos —",
     visibleLabel: "Fuentes visibles",
+    youAreHere: "Estás aquí",
 
-    // 🟦 Teaser (ES)
     insightsTitle: "Insights de datos",
     insightsText:
       "Consulta los gráficos de fuentes por distrito y por 1.000 habitantes para entender mejor las posibles desigualdades de acceso al agua pública en Barcelona.",
     insightsLink: "Ver insights"
   }
 };
-
-
 
 let currentLang = "ca";
 
@@ -81,7 +96,7 @@ fetch(CSV_FILE)
     Papa.parse(csvText, {
       header: true,
       skipEmptyLines: true,
-      complete: function(results) {
+      complete: function (results) {
         allFountains = results.data
           .filter(r => r.LATITUD && r.LONGITUD)
           .map(r => {
@@ -113,6 +128,7 @@ fetch(CSV_FILE)
 function renderFountains(selectedDistrict = "") {
   markersLayer.clearLayers();
   const listEl = document.getElementById('fountainList');
+  if (!listEl) return;
   listEl.innerHTML = "";
 
   const filtered = selectedDistrict
@@ -147,7 +163,7 @@ function updateCountInfo(visible, total) {
   if (!countInfoEl) return;
   const LText = LANG[currentLang];
 
-  // guarda os valores atuais para poder reaproveitar na troca de idioma
+  // guarda para reaproveitar na troca de idioma
   countInfoEl.dataset.visible = String(visible);
   countInfoEl.dataset.total = String(total);
 
@@ -161,8 +177,7 @@ function populateDistrictFilter() {
   const districts = Array.from(new Set(
     allFountains.map(f => f.district).filter(Boolean)
   )).sort();
-  
-  // mantém a primeira opção para "todos"
+
   districtFilterEl.innerHTML = "";
   const firstOpt = document.createElement("option");
   firstOpt.value = "";
@@ -175,34 +190,6 @@ function populateDistrictFilter() {
     opt.textContent = d;
     districtFilterEl.appendChild(opt);
   });
-}
-// Apply Language
-function applyLanguage(langCode) {
-  currentLang = langCode;
-  const LText = LANG[langCode];
-
-  document.getElementById("appTitle").textContent = LText.title;
-  document.getElementById("dataSourceText").textContent = LText.source;
-  document.getElementById("districtLabel").textContent = LText.filter;
-  document.getElementById("locateBtn").textContent = LText.locate;
-  document.getElementById("aboutLink").textContent = LText.about;
-
-  // 🆕 Teaser
-  document.getElementById("insightsTeaserTitle").textContent = LText.insightsTitle;
-  document.getElementById("insightsTeaserText").textContent = LText.insightsText;
-  document.getElementById("insightsTeaserLink").textContent = LText.insightsLink;
-
-  // atualizar texto "Fonts visibles"
-  updateCountInfo(
-    parseInt((document.getElementById('countInfo').dataset.visible || allFountains.length), 10) || allFountains.length,
-    allFountains.length
-  );
-
-  // atualizar opção “todos”
-  const select = document.getElementById("districtFilter");
-  if (select.options.length > 0) {
-    select.options[0].textContent = LText.allOption;
-  }
 }
 
 if (districtFilterEl) {
@@ -218,13 +205,12 @@ function setNearestMessage(msg) {
   }
 }
 
-// geolocalização (melhor UX)
+// geolocalização
 if (locateBtnEl) {
   locateBtnEl.addEventListener('click', () => {
     const LText = LANG[currentLang];
 
     if (!navigator.geolocation) {
-      // em vez de só alert, também mostra no painel
       setNearestMessage(LText.geoNotSupported);
       alert(LText.geoNotSupported);
       return;
@@ -239,7 +225,6 @@ if (locateBtnEl) {
 
         setNearestMessage("Ubicació trobada. Calculant la font més propera...");
 
-        // marcador do utilizador
         L.circleMarker([userLat, userLon], { radius: 6, color: 'blue' })
           .addTo(map)
           .bindPopup(LText.youAreHere)
@@ -310,7 +295,7 @@ document.getElementById('darkModeBtn').onclick = () => {
   document.body.classList.toggle('dark');
 };
 
-// Idioma
+// Idioma (ÚNICA função applyLanguage)
 function applyLanguage(langCode) {
   currentLang = langCode;
   const LText = LANG[langCode];
@@ -321,7 +306,15 @@ function applyLanguage(langCode) {
   document.getElementById("locateBtn").textContent = LText.locate;
   document.getElementById("aboutLink").textContent = LText.about;
 
-  // atualizar texto "Fonts visibles" reaproveitando os dados atuais
+  // teaser na sidebar
+  const tTitle = document.getElementById("insightsTeaserTitle");
+  const tText = document.getElementById("insightsTeaserText");
+  const tLink = document.getElementById("insightsTeaserLink");
+  if (tTitle) tTitle.textContent = LText.insightsTitle;
+  if (tText) tText.textContent = LText.insightsText;
+  if (tLink) tLink.textContent = LText.insightsLink;
+
+  // atualizar texto "Fonts visibles"
   if (countInfoEl) {
     const visible = parseInt(countInfoEl.dataset.visible || allFountains.length, 10) || allFountains.length;
     const total = parseInt(countInfoEl.dataset.total || allFountains.length, 10) || allFountains.length;
