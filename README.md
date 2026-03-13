@@ -78,7 +78,7 @@ All datasets used in this project were obtained from the **Open Data Portal of t
 
 Explore Barcelona’s public drinking fountains through an interactive map built using **Leaflet.js**, **Open Data BCN**, and lightweight frontend technologies.
 
-👉 **Live site:**  
+ **Live site:**  
 https://ssilvacris.github.io/barcelona-water-distribution/
 
 This web application allows users to:
@@ -92,7 +92,7 @@ This web application allows users to:
 The dataset used is sourced from **Open Data BCN** and includes 1,736 fountains in 2024/2025.
 
 
-### 📁 Source Code
+###  Source Code
 All frontend code is available inside the `/docs` folder of this repository.
 
 
