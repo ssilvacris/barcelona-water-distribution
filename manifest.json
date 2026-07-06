@@ -1,0 +1,14 @@
+{
+  "name": "Barcelona Water Fountains Analysis",
+  "short_name": "BCN Water",
+  "description": "Análise de fontes de água pública em Barcelona com dados abertos",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#1e88e5",
+  "icons": [
+    { "src": "icons/icon-192.png", "sizes": "192x192", "type": "image/png" },
+    { "src": "icons/icon-512.png", "sizes": "512x512", "type": "image/png" }
+  ]
+}
