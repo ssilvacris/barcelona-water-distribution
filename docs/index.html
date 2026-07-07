@@ -86,6 +86,8 @@
             display: inline-block;
         }
     </style>
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#1e88e5">
 </head>
 <body>
 
@@ -881,6 +883,9 @@
             console.error('Error loading CSV data:', err);
             document.getElementById('map-stats').innerText = 'Error loading data. Please check CSV files.';
         });
+    </script>
+    <script>
+    if ('serviceWorker' in navigator) { navigator.serviceWorker.register('sw.js'); }
     </script>
 </body>
 </html>
