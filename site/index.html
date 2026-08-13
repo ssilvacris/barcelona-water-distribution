@@ -21,6 +21,29 @@
   <link rel="manifest" href="manifest.json">
   <meta name="theme-color" content="#1e88e5">
   <link rel="apple-touch-icon" href="icons/icon-192.png">
+
+  <!-- PWA Configuration -->
+  <link rel="manifest" href="/barcelona-water-distribution/manifest.json">
+  <meta name="theme-color" content="#1e88e5">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="BCN Water">
+
+  <!-- Register Service Worker -->
+  <script>
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('/barcelona-water-distribution/service-worker.js')
+          .then(registration => {
+            console.log('Service Worker registrado com sucesso!', registration);
+          })
+          .catch(error => {
+            console.log('Erro ao registrar Service Worker:', error);
+          });
+      });
+    }
+  </script>
 </head>
 
 <body>
@@ -33,7 +56,7 @@
       <option value="">— Tots —</option>
     </select>
 
-    <button id="locateBtn">📍 Mostrar font més propera</button>
+    <button id="locateBtn">Mostrar font més propera</button>
     <p id="nearestInfo" class="small"></p>
 
     <div class="fountain-list" id="fountainList"></div>
